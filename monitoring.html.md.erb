@@ -8,3 +8,393 @@ This topic describes how to monitor PCF Metric Store. It includes key scaling in
 ## <a id='overview'></a> Overview
 
 ## <a id='ksi'></a> Key Scaling Indicators
+
+## <a id='metrics'></a> Metric Emitted by PCF Metric Store
+
+PCF Metric Store publishes metrics for monitoring the Metric Store itself.
+You can use these metrics to observe the health of the Metric Store and determine if the VMs and disks are appropriately scaled.
+
+### <a id='nozzle-metrics'></a> Nozzle Job Metrics
+
+The nozzle is the process that ingresses envelopes from Loggregator's Reverse
+Log Proxy (RLP).
+
+<table class="nice">
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Unit</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Number of envelopes sent to collocated Metric Store</td>
+  <td><code>nozzle_envelopes_ingress</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>When increasing, nozzle is correctly consuming from the RLP</td>
+</tr>
+<tr>
+  <td>Number of envelopes dropped when reading from RLP</td>
+  <td><code>nozzle_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>If this number is increasing at a steady rate, it may indicate that you
+  need scale up the size of your VMs</td>
+</tr>
+<tr>
+  <td>Number of points (non-timer) dropped on ingress</td>
+  <td><code>nozzle_stream_diode_points_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>Should always be zero. If not, it may be useful in debugging.</td>
+</tr>
+<tr>
+  <td>Number of points (non-timer) dropped in outbound channel</td>
+  <td><code>nozzle_stream_channel_points_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>Should always be zero. If not, it may be useful in debugging.</td>
+</tr>
+<tr>
+  <td>Number of points (timer) dropped on ingress</td>
+  <td><code>nozzle_timer_diode_points_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>Should always be zero. If not, it may be useful in debugging.</td>
+</tr>
+<tr>
+  <td>Number of points (timer) dropped in outbound channel</td>
+  <td><code>nozzle_timer_channel_points_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>Should always be zero. If not, it may be useful in debugging.</td>
+</tr>
+<tr>
+  <td>Number of batches of points written to its collocated Metric Store</td>
+  <td><code>nozzle_batches_egress</code></td>
+  <td>counter</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points written to its collocated Metric Store</td>
+  <td><code>nozzle_points_egress</code></td>
+  <td>counter</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>Duration of write to collocated metric store in milliseconds</td>
+  <td><code>nozzle_egress_write_duration</code></td>
+  <td>summary</td>
+  <td>ms</td>
+  <td>If this number suddenly increases, it may indicate network issues or an
+  overloaded Metric Store node</td>
+</tr>
+<tr>
+  <td>Number of errors writing to a remote node</td>
+  <td><code>nozzle_egress_write_errors</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>If this number consistently increasing, it may indicate network issues or an
+  overloaded Metric Store node</td>
+</tr>
+</table>
+
+### <a id='metric-store-job-metrics'></a> Metric Store Job Metrics
+
+<table>
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Unit</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Number of errors encountered when asking the OS for free disk space</td>
+  <td><code>metric_store_disk_free_errors</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>Anything other than zero here indicates a potential problem with the OS
+  or persistent volume</td>
+</tr>
+<tr>
+  <td>Percentage of free space on persistent disk</td>
+  <td><code>metric_store_disk_free_percent</code></td>
+  <td>gauge</td>
+  <td>percent</td>
+  <td>This measures the available free disk space on the persistent volume for
+  non-root users and will be lower than what is reported by `df`</td>
+</tr>
+<tr>
+  <td>Number of points ingressed to collocated Metric Store</td>
+  <td><code>metric_store_ingress</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>This should be steadily increasing at a relatively consistent rate</td>
+</tr>
+<tr>
+  <td>Number of shards pruned</td>
+  <td><code>metric_store_num_shards_pruned</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>A shard refers to a day's worth of metric data and can be pruned due to
+  age or disk space requirements</td>
+</tr>
+<tr>
+  <td>Number of errors encountered while getting points from the storage engine</td>
+  <td><code>metric_store_num_get_errors</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>If non-zero, this could indicate a problem with the storage engine</td>
+</tr>
+<tr>
+  <td>Number of timeout errors from PromQL Engine</td>
+  <td><code>metric_store_promql_timeout</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>An increase here indicates that queries are taking too long to complete,
+  which could indicate that they are trying to retrieve too much data</td>
+</tr>
+<!-- hinted handoff metrics -->
+<tr>
+  <td>Number of points written into hinted handoff queue destined for node N</td>
+  <td><code>metric_store_num_queued_points_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>This is expected to increase when other nodes are restarting, but should
+  stop increasing when all nodes are back online</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_num_queue_errors_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>If growing consistently, there may be an issue with how quickly
+  Metric Store is ingressing points</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_num_replayed_points_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_num_replay_errors_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<!-- end of hinted handoff metrics -->
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_diode_dropped_to_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_internode_sent_points_to_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_batch_dropped_to_N</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_local_write_points</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_internode_received_points</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_promql_instant_query_time</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_promql_range_query_time</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_index_size</code></td>
+  <td>gauge</td>
+  <td>byte</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_num_series</code></td>
+  <td>gauge</td>
+  <td>series</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_num_measurements</code></td>
+  <td>gauge</td>
+  <td>measurement</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_label_fields_query_time</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_label_tags_query_time</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_measurement_names_query_time</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_queue_disk_usage_N</code></td>
+  <td>gauge</td>
+  <td>bytes</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_batch_chan_size_to_N</code></td>
+  <td>gauge</td>
+  <td>points</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_internode_send_time_to_N</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_ingress_payload_size</code></td>
+  <td>gauge</td>
+  <td>bytes</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_local_write_from_ingress_timer</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>metric_store_local_write_from_internode_timer</code></td>
+  <td>gauge</td>
+  <td>milliseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>ingress_points_written</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>ingress_local_batches_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>ingress_remote_batches_dropped</code></td>
+  <td>counter</td>
+  <td></td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>ingress_write_duration</code></td>
+  <td>gauge</td>
+  <td>ns</td>
+  <td>TBD</td>
+</tr>
+</table>
+
+### <a id='cf-auth-proxy-job-metrics'></a> CF Authorization Proxy Job Metrics
+<table>
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Unit</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>cf_auth_proxy_last_capiv3_apps_latency</code></td>
+  <td>gauge</td>
+  <td>nanoseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>cf_auth_proxy_last_capiv3_list_service_instances_latency</code></td>
+  <td>gauge</td>
+  <td>nanoseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>cf_auth_proxy_last_capiv3_apps_by_name_latency</code></td>
+  <td>gauge</td>
+  <td>nanoseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>cf_auth_proxy_total_read_time</code></td>
+  <td>gauge</td>
+  <td>nanoseconds</td>
+  <td>TBD</td>
+</tr>
+<tr>
+  <td>TBD</td>
+  <td><code>cf_auth_proxy_total_query_time</code></td>
+  <td>gauge</td>
+  <td>nanoseconds</td>
+  <td>TBD</td>
+</tr>
+</table>

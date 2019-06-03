@@ -7,6 +7,211 @@ This topic describes configuring and using PCF Metric Store.
 
 ## <a id='overview'></a> Overview
 
+PCF Metric store implements the Prometheus Query Language for querying metrics for which you have access.
+
 ## <a id='prerequisites'></a> Prerequisites
 
-## <a id='configure'></a> Configure PCF Metric Store
+- Completed [installation](installing.html) of the PCF Metric Store Tile.
+- [curl](https://github.com/curl/curl)
+- [CF Auth Token](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+
+## <a id='using'></a> Using PCF Metric Store
+
+### <a id='authorization-authentication'></a> Authorization & Authentication
+
+When querying the API via HTTPS, each request must have the `Authorization`
+header set with a UAA provided token.
+
+The scopes `doppler.firehose` and `logs.admin` are authorized as `admin`, and
+return data for all relevant source IDs. This authorization is required to
+retrieve platform metrics.
+
+For more limited scopes, Cloud Controller is consulted to establish app
+permissions.
+
+To test it and see the source_ids for which you have access:
+
+```shell
+cf login
+curl -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-DOMAIN/api/v1/label/source_id/values
+```
+
+
+### **GET** `/api/v1/labels`
+
+Retrieve labels for authorized source ids.
+
+##### Request
+
+```shell
+$ curl "https://metric-store.SYSTEM-DOMAIN/api/v1/labels"
+```
+
+##### Response Body
+
+```json
+{
+  "status": "success",
+  "data": [
+    "__name__",
+    "deployment",
+    [...]
+    "ip",
+    "origin",
+    "request_type",
+    "source_id",
+    "status_code",
+    "unit",
+  ]
+}
+```
+
+### **GET** `/api/v1/label/<label_name>/values`
+
+Retrieve label values by `label_name` for all authorized source ids. The special label `__name__` can be used to retrieve the metric names.
+
+##### Request
+
+```shell
+$ curl "https://metric-store.SYSTEM-DOMAIN/api/v1/label/<label-name>/values"
+```
+
+##### Response Body
+
+```json
+{
+    "status":"success",
+    "data":["10", "1"]
+}
+```
+
+##### Request
+
+```shell
+$ curl "https://metric-store.SYSTEM-DOMAIN/api/v1/label/__name__/values"
+```
+
+##### Response Body
+
+```json
+{
+    "status":"success",
+    "data":["metric_name_0", "metric_name_1"]
+}
+```
+
+## Prometheus-Compatible Endpoints
+
+### Notes on PromQL
+The ultimate goal of these endpoints is to create a fully-compliant,
+Prometheus-compatible interface. This should allow tools such as Grafana to
+work directly with PCF Metric Store without any additional translation.
+
+A valid PromQL metric name consists of the character [a-Z][0-9] and underscore. Names can begin with [a-Z] or underscore. Names cannot begin with [0-9].
+As a measure to work with existing metrics that do not comply with the above format a conversion process takes place when matching on metric names.
+Any character that is not in the set of valid characters is converted to an underscore.
+The metric is not changed in the store.
+
+e.g., to match on a metric name ``http.latency`` use the name ``http_latency`` as a search term.
+
+### **GET** `/api/v1/query`
+
+Issues a PromQL instant query against PCF Metric Store data. You can read more
+detail in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#instant-queries).
+
+Query Parameters:
+
+- **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
+- **time** is an optional UNIX timestamp in nanoseconds. (e.g. `date -d '24 hours ago' +%s`).
+
+```shell
+$ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" --data-urlencode 'query=metrics{source_id="source-id-1"}'
+```
+
+##### Response Body
+```json
+{
+  "status": "success",
+  "data": {
+    "resultType": "vector",
+    "result": [
+      { "metric": {...}, "value": [ <timestamp>, "<value>" ] },
+      ...
+    ]
+  }
+}
+```
+
+### **GET** `/api/v1/query_range`
+
+Issues a PromQL range query against PCF Metric Store data. You can read more detail
+in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries).
+
+Query Parameters:
+
+- **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
+- **start_time** is a UNIX timestamp in nanoseconds. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[starttime..endtime)`
+- **end** is a UNIX timestamp in nanoseconds. (e.g. `date +%s`). End time is exclusive. `[starttime..endtime)`
+- **step** is a query resolution step width in `duration` format or float number of seconds.
+
+```shell
+$ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query_range" \
+    --data-urlencode 'query=metrics{source_id="source-id-1"}' \
+    --data-urlencode 'start=1537290750' \
+    --data-urlencode 'end=1537290760' \
+    --data-urlencode 'step=1'
+```
+
+##### Response Body
+```json
+{
+  "status": "success",
+  "data": {
+    "resultType": "matrix",
+    "result": [
+      {
+        "metric": {...},
+        "values": [
+          [ <timestamp>, "<value>" ],
+          ...
+        ]
+      },
+      ...
+    ]
+  }
+}
+```
+
+### **GET** `/api/v1/series`
+
+Issues a PromQL series query against PCF Metric Store data. You can read more detail
+in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#finding-series-by-label-matchers).
+
+Query Parameters:
+
+- **start_time** is a UNIX timestamp in nanoseconds. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[starttime..endtime)`
+- **end** is a UNIX timestamp in nanoseconds. (e.g. `date +%s`). End time is exclusive. `[starttime..endtime)`
+- **match[]** is a [series selector](https://prometheus.io/docs/prometheus/latest/querying/basics/#time-series-selectors).
+
+```shell
+$ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/series" \
+    --data-urlencode 'match[]=metric_name_0' \
+    --data-urlencode 'match[]=metric_name_1' \
+    --data-urlencode 'start=1537290750' \
+    --data-urlencode 'end=1537290760'
+```
+
+##### Response Body
+```json
+{
+  "status": "success",
+  "data": [
+	{
+		"__name__": "metric_name_0",
+		"source_id": "1"
+        ...
+	},
+    ...
+  ]
+}
+```

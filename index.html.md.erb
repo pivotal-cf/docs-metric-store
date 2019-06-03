@@ -5,6 +5,19 @@ owner: Log Cache
 
 ## <a id='about'></a> About PCF Metric Store
 
+Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem. It is multi-tenant aware (the auth proxy ensures that you only have access to metrics from your apps), easy to query (it is 100% compatible with the [Prometheus API](https://prometheus.io/docs/prometheus/latest/querying/basics/)), and has a powerful storage engine (the [InfluxDB storage engine](https://docs.influxdata.com/influxdb) has built-in compression and a memory-efficient series index).
+
+- **Multi-tenant aware** Application Developers have access to their own metrics.
+- **Ubiquitous Query Language** Metric Store is 100% compatible with the Prometheus API.
+- **Powerful Storage Engine** The InfluxDB storage engine has built-in compression and a memory-efficient series index.
+
+Metric Store for PCF offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
+
+### <a id='oss-metric-store'></a> More Information on Open Source Metric Store
+
+- [Open Source Release Blog post](https://content.pivotal.io/blog/metric-store-a-cloud-native-time-series-database-for-cloud-foundry)
+- [Open Source README](https://github.com/cloudfoundry/metric-store-release/blob/develop/README.md)
+
 ## <a id='snapshot'></a> Product Snapshot
 
 The following table provides version and version-support information for PCF Metric Store.
@@ -14,31 +27,23 @@ The following table provides version and version-support information for PCF Met
     <th>Details</th>
     <tr>
         <td>Version</td>
-        <td></td>
+        <td>v1.x.x</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td></td>
+        <td>June x, 2019</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td></td>
+        <td>v2.4.x, v2.5.x, v2.6.x</td>
     </tr>
     <tr>
         <td>Compatible Pivotal Application Service version(s)</td>
-        <td></td>
-    </tr>
-     <tr>
-        <td>Compatible Pivotal Cloud Foundry Event Alerts version(s)</td>
-        <td></td>
+        <td>v2.4.x, v2.5.x, v2.6.x</td>
     </tr>
     <tr>
         <td>IaaS support</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Browser support</td>
-        <td></td>
+        <td>AWS, Azure, GCP, and vSphere</td>
     </tr>
     <tr>
         <td>IPsec support</td>
