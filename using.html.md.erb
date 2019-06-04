@@ -62,7 +62,7 @@ Query Parameters:
 - **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
 - **time** is an optional UNIX timestamp in nanoseconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`).
 
-<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter.</p>
+<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
 
 ```shell
 $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" --data-urlencode 'query=metric_name_0{source_id="source_id_0"}'
@@ -94,7 +94,7 @@ Query Parameters:
 - **end** is a UNIX timestamp in nanoseconds or RFC3339. (e.g. `date +%s`). End time is exclusive. `[start..end)`
 - **step** is a query resolution step width in `duration` format or float number of seconds.
 
-<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter.</p>
+<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
 
 ```shell
 $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query_range" \
