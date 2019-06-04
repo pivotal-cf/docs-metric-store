@@ -7,7 +7,11 @@ This topic describes how to monitor PCF Metric Store. It includes key scaling in
 
 ## <a id='overview'></a> Overview
 
+PCF Metric Store can be scaled vertically at this time. When disk resources are reaching complete consumption, PCF Metric Store will start dropping the oldest data first. When memory and/or CPU resources are reaching complete consumption, PCF Metric Store should be vertically scaled.
+
 ## <a id='ksi'></a> Key Scaling Indicators
+
+- [nozzle_dropped](monitoring.html#nozzle_dropped)
 
 ## <a id='metrics'></a> Metric Emitted by PCF Metric Store
 
@@ -44,7 +48,7 @@ Log Proxy (RLP).
 </tr>
 <tr>
   <td>Number of points (non-timer) dropped on ingress</td>
-  <td><code>nozzle_stream_diode_points_dropped</code></td>
+  <td><a id='nozzle_dropped'></a><code>nozzle_stream_diode_points_dropped</code></td>
   <td>counter</td>
   <td></td>
   <td>Should always be zero. If not, it may be useful in debugging.</td>

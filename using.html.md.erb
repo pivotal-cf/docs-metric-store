@@ -33,72 +33,10 @@ To test it and see the source_ids for which you have access:
 
 ```shell
 cf login
-curl -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-DOMAIN/api/v1/label/source_id/values
+curl -vvv -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-DOMAIN/api/v1/label/source_id/values
 ```
 
-
-### **GET** `/api/v1/labels`
-
-Retrieve labels for authorized source ids.
-
-##### Request
-
-```shell
-$ curl "https://metric-store.SYSTEM-DOMAIN/api/v1/labels"
-```
-
-##### Response Body
-
-```json
-{
-  "status": "success",
-  "data": [
-    "__name__",
-    "deployment",
-    [...]
-    "ip",
-    "origin",
-    "request_type",
-    "source_id",
-    "status_code",
-    "unit",
-  ]
-}
-```
-
-### **GET** `/api/v1/label/<label_name>/values`
-
-Retrieve label values by `label_name` for all authorized source ids. The special label `__name__` can be used to retrieve the metric names.
-
-##### Request
-
-```shell
-$ curl "https://metric-store.SYSTEM-DOMAIN/api/v1/label/<label-name>/values"
-```
-
-##### Response Body
-
-```json
-{
-    "status":"success",
-    "data":["10", "1"]
-}
-```
-
-##### Request
-
-```shell
-$ curl "https://metric-store.SYSTEM-DOMAIN/api/v1/label/__name__/values"
-```
-
-##### Response Body
-
-```json
-{
-    "status":"success",
-    "data":["metric_name_0", "metric_name_1"]
-}
-```
+The status code will be 200 is everything is working properly.
 
 ## Prometheus-Compatible Endpoints
 
@@ -122,10 +60,10 @@ detail in the Prometheus documentation [here](https://prometheus.io/docs/prometh
 Query Parameters:
 
 - **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
-- **time** is an optional UNIX timestamp in nanoseconds. (e.g. `date -d '24 hours ago' +%s`).
+- **time** is an optional UNIX timestamp in nanoseconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`).
 
 ```shell
-$ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" --data-urlencode 'query=metrics{source_id="source-id-1"}'
+$ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" --data-urlencode 'query=metric_name_0{source_id="source_id_0"}'
 ```
 
 ##### Response Body
@@ -150,16 +88,16 @@ in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/lat
 Query Parameters:
 
 - **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
-- **start_time** is a UNIX timestamp in nanoseconds. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[starttime..endtime)`
-- **end** is a UNIX timestamp in nanoseconds. (e.g. `date +%s`). End time is exclusive. `[starttime..endtime)`
+- **start** is a UNIX timestamp in nanoseconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[start..end)`
+- **end** is a UNIX timestamp in nanoseconds or RFC3339. (e.g. `date +%s`). End time is exclusive. `[start..end)`
 - **step** is a query resolution step width in `duration` format or float number of seconds.
 
 ```shell
-$ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query_range" \
-    --data-urlencode 'query=metrics{source_id="source-id-1"}' \
-    --data-urlencode 'start=1537290750' \
-    --data-urlencode 'end=1537290760' \
-    --data-urlencode 'step=1'
+$ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query_range" \
+    --data-urlencode 'query=metric_name_0{source_id="source_id_0"}' \
+    --data-urlencode "start=$(date -d '24 hours ago' +%s)" \
+    --data-urlencode "end=$(date +%s)" \
+    --data-urlencode 'step=1h'
 ```
 
 ##### Response Body
@@ -189,16 +127,16 @@ in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/lat
 
 Query Parameters:
 
-- **start_time** is a UNIX timestamp in nanoseconds. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[starttime..endtime)`
-- **end** is a UNIX timestamp in nanoseconds. (e.g. `date +%s`). End time is exclusive. `[starttime..endtime)`
+- **start** is a UNIX timestamp in nanoseconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[start..end)`
+- **end** is a UNIX timestamp in nanoseconds or RFC3339. (e.g. `date +%s`). End time is exclusive. `[start..end)`
 - **match[]** is a [series selector](https://prometheus.io/docs/prometheus/latest/querying/basics/#time-series-selectors).
 
 ```shell
-$ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/series" \
+$ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/series" \
     --data-urlencode 'match[]=metric_name_0' \
     --data-urlencode 'match[]=metric_name_1' \
-    --data-urlencode 'start=1537290750' \
-    --data-urlencode 'end=1537290760'
+    --data-urlencode "start=$(date -d '24 hours ago' +%s)" \
+    --data-urlencode "end=$(date +%s)"
 ```
 
 ##### Response Body
@@ -206,12 +144,75 @@ $ curl -G "https://metric-store.SYSTEM-DOMAIN/api/v1/series" \
 {
   "status": "success",
   "data": [
-	{
-		"__name__": "metric_name_0",
-		"source_id": "1"
-        ...
-	},
+    {
+      "__name__": "metric_name_0",
+      "source_id": "source_id_0",
+      ...
+    },
     ...
   ]
+}
+```
+
+### **GET** `/api/v1/labels`
+
+Retrieve all label names for authorized source ids from the store.
+
+##### Request
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN/api/v1/labels"
+```
+
+##### Response Body
+
+```json
+{
+  "status": "success",
+  "data": [
+    "__name__",
+    "deployment",
+    ...
+    "ip",
+    "origin",
+    "request_type",
+    "source_id",
+    "status_code",
+    "unit"
+  ]
+}
+```
+
+### **GET** `/api/v1/label/<label_name>/values`
+
+Retrieve label values by `label_name` for all authorized source ids. The special label `__name__` can be used to retrieve metric names from the store.
+
+##### Request
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN/api/v1/label/<label-name>/values"
+```
+
+##### Response Body
+
+```json
+{
+    "status":"success",
+    "data":["10", "1"]
+}
+```
+
+##### Request
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN/api/v1/label/__name__/values"
+```
+
+##### Response Body
+
+```json
+{
+    "status":"success",
+    "data":["metric_name_0", "metric_name_1" ... ]
 }
 ```
