@@ -92,7 +92,7 @@ Log Proxy (RLP).
   <td>Duration of write to collocated metric store in milliseconds</td>
   <td><code>nozzle_egress_write_duration</code></td>
   <td>summary</td>
-  <td>ms</td>
+  <td>milliseconds</td>
   <td>If this number suddenly increases, it may indicate network issues or an
   overloaded Metric Store node</td>
 </tr>
@@ -194,110 +194,115 @@ Log Proxy (RLP).
   <td>TBD</td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Number of errors that occured while hinted handoff replayed data to node N</td>
   <td><code>metric_store_num_replay_errors_N</code></td>
   <td>counter</td>
   <td></td>
-  <td>TBD</td>
+  <td>If non-zero, some data may be missing. Review the metric-store logs
+  to better understand the nature of the error</td>
 </tr>
 <!-- end of hinted handoff metrics -->
 <tr>
-  <td>TBD</td>
+<td>Number of points dropped by the backpressure prevention diode when being written to node N</td>
   <td><code>metric_store_diode_dropped_to_N</code></td>
   <td>counter</td>
   <td></td>
-  <td>TBD</td>
+  <td>If growing consistently, there may be an issue with how quickly Metric
+  Store is ingressing points</td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Total points sent to node N by other nodes</td>
   <td><code>metric_store_internode_sent_points_to_N</code></td>
   <td>counter</td>
   <td></td>
-  <td>TBD</td>
+  <td>This should be steadily increasing at a relatively consistent rate. If
+  it stops increasing, this indicates a problem with your Metric Store nodes
+  or their internode connections</td>
 </tr>
 <tr>
-  <td>TBD</td>
+<td>Number of points dropped by the batcher when sending to node N</td>
   <td><code>metric_store_batch_dropped_to_N</code></td>
   <td>counter</td>
   <td></td>
-  <td>TBD</td>
+  <td>If this grows, try scaling up the size of your Metric Store VMs to have
+  more compute power</td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Number of points ingressed on the same node they're written to</td>
   <td><code>metric_store_local_write_points</code></td>
   <td>counter</td>
   <td></td>
-  <td>TBD</td>
+  <td>Should be steadily increasing at a relatively consistent rate</td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Number of points received from other nodes</td>
   <td><code>metric_store_internode_received_points</code></td>
   <td>counter</td>
   <td></td>
-  <td>TBD</td>
+  <td>Should be steadily increasing at a relatively consistent rate</td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>The time it took to execute the PromQL Instant Query against Metric Store</td>
   <td><code>metric_store_promql_instant_query_time</code></td>
   <td>gauge</td>
   <td>milliseconds</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>The time it took to execute the PromQL Range Query against Metric Store</td>
   <td><code>metric_store_promql_range_query_time</code></td>
   <td>gauge</td>
   <td>milliseconds</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Current size of the Metric Store Index</td>
   <td><code>metric_store_index_size</code></td>
   <td>gauge</td>
   <td>byte</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>The number of series currently in Metric Store</td>
   <td><code>metric_store_num_series</code></td>
   <td>gauge</td>
   <td>series</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Current number of unique metric names stored in Metric Store</td>
   <td><code>metric_store_num_measurements</code></td>
   <td>gauge</td>
   <td>measurement</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>The time it took to fetch all labels for <code>/api/v1/labels</code></td>
   <td><code>metric_store_label_fields_query_time</code></td>
   <td>gauge</td>
   <td>milliseconds</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>The time it took to fetch values for <code>/api/v1/label/<label_name>/values</code></td>
   <td><code>metric_store_label_tags_query_time</code></td>
   <td>gauge</td>
   <td>milliseconds</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>The time it took to fetch all metric names</td>
   <td><code>metric_store_measurement_names_query_time</code></td>
   <td>gauge</td>
   <td>milliseconds</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
+  <td>Current disk space used by the hinted handoff queue to write on node N</td>
   <td><code>metric_store_queue_disk_usage_N</code></td>
   <td>gauge</td>
   <td>bytes</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
   <td>TBD</td>
@@ -359,7 +364,7 @@ Log Proxy (RLP).
   <td>TBD</td>
   <td><code>ingress_write_duration</code></td>
   <td>gauge</td>
-  <td>ns</td>
+  <td>nanoseconds</td>
   <td>TBD</td>
 </tr>
 </table>
@@ -403,9 +408,11 @@ Log Proxy (RLP).
 </tr>
 <tr>
   <td>TBD</td>
+  <td>The time it takes to fetch the data for /api/v1/query </td>
   <td><code>cf_auth_proxy_total_query_time</code></td>
   <td>gauge</td>
   <td>nanoseconds</td>
-  <td>TBD</td>
+  <td>If this value in higher than normal, try scaling up the size of your
+  Metric Store VMs to have more compute power</td>
 </tr>
 </table>
