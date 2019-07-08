@@ -22,7 +22,7 @@ PCF Metric store implements the Prometheus Query Language for querying metrics f
 When querying the API via HTTPS, each request must have the `Authorization`
 header set with a UAA provided token.
 
-The scopes `doppler.firehose` and `logs.admin` are authorized as `admin`, and
+Either scope `doppler.firehose` or `logs.admin` are authorized as `admin`, and
 return data for all relevant source IDs. This authorization is required to
 retrieve platform metrics and to execute Label and Series queries.
 
