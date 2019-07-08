@@ -22,14 +22,12 @@ PCF Metric store implements the Prometheus Query Language for querying metrics f
 When querying the API via HTTPS, each request must have the `Authorization`
 header set with a UAA provided token.
 
-Either scope `doppler.firehose` or `logs.admin` are authorized as `admin`, and
-return data for all relevant source IDs. This authorization is required to
-retrieve platform metrics and to execute Label and Series queries.
+#### For Metric Store admins
 
-For more limited scopes, Cloud Controller is consulted to establish app
-permissions.
+As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries. 
+You will need to add either `doppler.firehose` or `logs.admin` scope to your admin account.
 
-As an admin (`doppler.firehose` or `logs.admin`):
+You then should be able to run the following query:
 
 ```shell
 cf login
@@ -37,6 +35,18 @@ curl -vvv -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-D
 ```
 
 The status code will be 200 is everything is working properly.
+
+#### For PAS developers
+
+As a PAS developer, you can query metrics for applications you have access to.
+When querying with PromQL, you must specify the `source_id` label with the application guid as the label value.
+
+For example:
+
+```shell
+curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" \
+  --data-urlencode "query=cpu{source_id=\"$(cf app --guid your-app-name)\"}"
+```
 
 ## <a id='querying'></a> Querying via Prometheus-Compatible HTTP Endpoints
 
