@@ -75,8 +75,11 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
   "data": {
     "resultType": "vector",
     "result": [
-      { "metric": {...}, "value": [ <timestamp>, "<value>" ] },
-      ...
+      { 
+        "metric": {"__name__": "metric_name"}, 
+        "value": [ "<timestamp>", "<value>" ] 
+      },
+      "..."
     ]
   }
 }
@@ -112,13 +115,13 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
     "resultType": "matrix",
     "result": [
       {
-        "metric": {...},
+        "metric": {"__name__": "metric_name"},
         "values": [
-          [ <timestamp>, "<value>" ],
-          ...
+          [ "<timestamp>", "<value>" ],
+          "..."
         ]
       },
-      ...
+      "..."
     ]
   }
 }
@@ -153,9 +156,9 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
     {
       "__name__": "metric_name_0",
       "source_id": "source_id_0",
-      ...
+      "..."
     },
-    ...
+    "..."
   ]
 }
 ```
@@ -180,7 +183,7 @@ $ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN
   "data": [
     "__name__",
     "deployment",
-    ...
+    "..."
     "ip",
     "origin",
     "request_type",
@@ -223,6 +226,6 @@ $ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN
 ```json
 {
     "status":"success",
-    "data":["metric_name_0", "metric_name_1" ... ]
+    "data":["metric_name_0", "metric_name_1", "..." ]
 }
 ```
