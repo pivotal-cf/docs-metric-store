@@ -1,21 +1,21 @@
 ---
-title: Using PCF Metric Store
+title: Using Metric Store for PCF
 owner: Log Cache
 ---
 
-This topic describes configuring and using PCF Metric Store.
+This topic describes configuring and using Metric Store for PCF.
 
 ## <a id='overview'></a> Overview
 
-PCF Metric store implements the Prometheus Query Language for querying metrics for which you have access.
+Metric Store for PCF implements the Prometheus Query Language for querying metrics for which you have access.
 
 ## <a id='prerequisites'></a> Prerequisites
 
-- Completed [installation](installing.html) of the PCF Metric Store Tile.
+- Completed [installation](installing.html) of the Metric Store for PCF Tile.
 - [curl](https://github.com/curl/curl)
 - [CF Auth Token](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
 
-## <a id='using'></a> Using PCF Metric Store
+## <a id='using'></a> Using Metric Store for PCF
 
 ### <a id='authorization-authentication'></a> Authorization & Authentication
 
@@ -53,7 +53,7 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
 ### Notes on PromQL
 The ultimate goal of these endpoints is to create a fully-compliant,
 Prometheus-compatible interface. This should allow tools such as Grafana to
-work directly with PCF Metric Store without any additional translation.
+work directly with Metric Store for PCF without any additional translation.
 
 A valid PromQL metric name consists of the character [a-Z][0-9] and underscore. Names can begin with [a-Z] or underscore. Names cannot begin with [0-9].
 As a measure to work with existing metrics that do not comply with the above format a conversion process takes place when matching on metric names.
@@ -64,7 +64,7 @@ e.g., to match on a metric name ``http.latency`` use the name ``http_latency`` a
 
 ### **GET** `/api/v1/query`
 
-Issues a PromQL instant query against PCF Metric Store data. You can read more
+Issues a PromQL instant query against Metric Store for PCF data. You can read more
 detail in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#instant-queries).
 
 Query Parameters:
@@ -97,7 +97,7 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
 
 ### **GET** `/api/v1/query_range`
 
-Issues a PromQL range query against PCF Metric Store data. You can read more detail
+Issues a PromQL range query against Metric Store for PCF data. You can read more detail
 in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries).
 
 Query Parameters:
@@ -139,7 +139,7 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
 
 ### **GET** `/api/v1/series`
 
-Issues a PromQL series query against PCF Metric Store data. You can read more detail
+Issues a PromQL series query against Metric Store for PCF data. You can read more detail
 in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#finding-series-by-label-matchers).
 
 <p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
