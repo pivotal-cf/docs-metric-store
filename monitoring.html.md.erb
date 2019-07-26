@@ -1,21 +1,21 @@
 ---
-title: Monitoring PCF Metric Store
+title: Monitoring Metric Store for PCF
 owner: Log Cache
 ---
 
-This topic describes how to monitor PCF Metric Store. It includes key scaling indicators (KSIs) to guide PCF Metric Store scaling decisions.
+This topic describes how to monitor Metric Store for PCF. It includes key scaling indicators (KSIs) to guide Metric Store scaling decisions.
 
 ## <a id='overview'></a> Overview
 
-PCF Metric Store can be scaled vertically at this time. When disk resources are reaching complete consumption, PCF Metric Store will start dropping the oldest data first. When memory and/or CPU resources are reaching complete consumption, PCF Metric Store should be vertically scaled.
+Metric Store for PCF can be scaled vertically at this time. When disk resources are reaching complete consumption, Metric Store for PCF will start dropping the oldest data first. When memory and/or CPU resources are reaching complete consumption, Metric Store for PCF should be vertically scaled.
 
 ## <a id='ksi'></a> Key Scaling Indicators
 
 - [nozzle_dropped](monitoring.html#nozzle_dropped)
 
-## <a id='metrics'></a> Metric Emitted by PCF Metric Store
+## <a id='metrics'></a> Metric Emitted by Metric Store for PCF
 
-PCF Metric Store publishes metrics for monitoring the Metric Store itself.
+Metric Store for PCF publishes metrics for monitoring the Metric Store itself.
 You can use these metrics to observe the health of the Metric Store and determine if the VMs and disks are appropriately scaled.
 
 ### <a id='nozzle-metrics'></a> Nozzle Job Metrics

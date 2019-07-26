@@ -1,9 +1,9 @@
 ---
-title: PCF Metric Store
+title: Metric Store for PCF
 owner: Log Cache
 ---
 
-## <a id='about'></a> About PCF Metric Store
+## <a id='about'></a> About Metric Store for PCF
 
 Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem. It is multi-tenant aware (the auth proxy ensures that you only have access to metrics from your apps), easy to query (it is compatible with the [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)), and has a powerful storage engine (the [InfluxDB storage engine](https://docs.influxdata.com/influxdb) has built-in compression and a memory-efficient series index).
 
@@ -20,7 +20,7 @@ Metric Store for PCF offers multi-node deployments, data replication, hinted han
 
 ## <a id='snapshot'></a> Product Snapshot
 
-The following table provides version and version-support information for PCF Metric Store.
+The following table provides version and version-support information about Metric Store for PCF.
 
 <table class="nice">
     <th>Element</th>
@@ -49,6 +49,6 @@ The following table provides version and version-support information for PCF Met
 
 ## <a id="limitations"></a>Limitations
 
-PCF Metric Store has the following limitations:
+Metric Store for PCF has the following limitations:
 
-- Horizontally scaling PCF Metric Store currently results in data loss. Vertical scaling is recommended at this time.
+- Horizontally scaling Metric Store for PCF currently results in data loss. Vertical scaling is recommended at this time.
