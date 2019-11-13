@@ -28,81 +28,68 @@ Log Proxy (RLP).
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
-  <th>Unit</th>
   <th>Notes</th>
 </tr>
 <tr>
   <td>Number of envelopes sent to collocated Metric Store</td>
-  <td><code>nozzle_envelopes_ingress</code></td>
+  <td><code>metric_store_nozzle_ingress_envelopes_total</code></td>
   <td>counter</td>
-  <td></td>
   <td>When increasing, nozzle is correctly consuming from the RLP</td>
 </tr>
 <tr>
   <td>Number of envelopes dropped when reading from RLP</td>
-  <td><a id='nozzle_dropped'></a><code>nozzle_dropped</code></td>
+  <td><a id='nozzle_dropped'></a><code>metric_store_nozzle_dropped_envelopes_total</code></td>
   <td>counter</td>
-  <td></td>
   <td>If this number is increasing at a steady rate, it may indicate that you
   need scale up the size of your VMs</td>
 </tr>
 <tr>
-  <td>Number of points (non-timer) dropped on ingress</td>
-  <td><code>nozzle_stream_diode_points_dropped</code></td>
+  <td>Number of points dropped in outbound channel</td>
+  <td><code>metric_store_nozzle_dropped_points_total</code></td>
   <td>counter</td>
-  <td></td>
   <td>Should always be zero. If not, it may be useful in debugging.</td>
-</tr>
-<tr>
-  <td>Number of points (non-timer) dropped in outbound channel</td>
-  <td><code>nozzle_stream_channel_points_dropped</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>Should always be zero. If not, it may be useful in debugging.</td>
-</tr>
-<tr>
-  <td>Number of points (timer) dropped on ingress</td>
-  <td><code>nozzle_timer_diode_points_dropped</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>Should always be zero. If not, it may be useful in debugging.</td>
-</tr>
-<tr>
-  <td>Number of points (timer) dropped in outbound channel</td>
-  <td><code>nozzle_timer_channel_points_dropped</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>Should always be zero. If not, it may be useful in debugging.</td>
-</tr>
-<tr>
-  <td>Number of batches of points written to its collocated Metric Store</td>
-  <td><code>nozzle_batches_egress</code></td>
-  <td>counter</td>
-  <td></td>
-  <td></td>
 </tr>
 <tr>
   <td>Number of points written to its collocated Metric Store</td>
-  <td><code>nozzle_points_egress</code></td>
+  <td><code>metric_store_nozzle_egress_points_total</code></td>
   <td>counter</td>
   <td></td>
-  <td></td>
-</tr>
-<tr>
-  <td>Duration of write to collocated metric store in milliseconds</td>
-  <td><code>nozzle_egress_write_duration</code></td>
-  <td>summary</td>
-  <td>milliseconds</td>
-  <td>If this number suddenly increases, it may indicate network issues or an
-  overloaded Metric Store node</td>
 </tr>
 <tr>
   <td>Number of errors writing to a remote node</td>
-  <td><code>nozzle_egress_write_errors</code></td>
+  <td><code>metric_store_nozzle_egress_errors_total</code></td>
   <td>counter</td>
-  <td></td>
   <td>If this number consistently increasing, it may indicate network issues or an
   overloaded Metric Store node</td>
+</tr>
+<tr>
+  <td>Total duration spent writing to points.</td>
+  <td><code>metric_store_nozzle_egres_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+</table>
+
+### <a id='metric-store-job-metrics'></a> CF Auth Proxy Job Metrics
+
+<table>
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Duration in seconds of requests made to the auth proxy </td>
+  <td><code>metric_store_auth_proxy_request_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Duration in seconds of external requests made to CAPI</td>
+  <td><code>metric_store_auth_proxy_capi_request_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
 </tr>
 </table>
 
@@ -113,306 +100,155 @@ Log Proxy (RLP).
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
-  <th>Unit</th>
   <th>Notes</th>
 </tr>
 <tr>
-  <td>The age in days of the oldest datapoint in metric store.</td>
-  <td><code>metric_store_storage_duration</code></td>
-  <td>gauge</td>
-  <td>days</td>
-  <td></td>
-</tr>
-<tr>
-  <td>Number of errors encountered when asking the OS for free disk space</td>
-  <td><code>metric_store_disk_free_errors</code></td>
+  <td>Number of points ingressed to colocated Metric Store</td>
+  <td><code>metric_store_ingress_points_total</code></td>
   <td>counter</td>
-  <td></td>
-  <td>Anything other than zero here indicates a potential problem with the OS
-  or persistent volume</td>
-</tr>
-<tr>
-  <td>Percentage of free space on persistent disk</td>
-  <td><code>metric_store_disk_free_percent</code></td>
-  <td>gauge</td>
-  <td>percent</td>
-  <td>This measures the available free disk space on the persistent volume for
-  non-root users and will be lower than what is reported by `df`</td>
-</tr>
-<tr>
-  <td>Number of points ingressed to collocated Metric Store</td>
-  <td><code>metric_store_ingress</code></td>
-  <td>counter</td>
-  <td></td>
   <td>This should be steadily increasing at a relatively consistent rate</td>
 </tr>
 <tr>
-  <td>Number of shards pruned</td>
-  <td><code>metric_store_num_shards_pruned</code></td>
+  <td>Number of points succesfully written to storage engine</td>
+  <td><code>metric_store_written_points_total</code></td>
+  <td>counter</td>
+  <td>This should be steadily increasing at a relatively consistent rate</td>
+</tr>
+<tr>
+  <td>Time spent writing points to the storage engine</td>
+  <td><code>metric_store_write_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Percentage of free space on persistent disk</td>
+  <td><code>metric_store_disk_free_ratio</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of shards removed due to time-based expiration</td>
+  <td><code>metric_store_expired_shards_total</code></td>
   <td>counter</td>
   <td></td>
-  <td>A shard refers to a day's worth of metric data and can be pruned due to
-  age or disk space requirements</td>
 </tr>
 <tr>
-  <td>Number of errors encountered while getting points from the storage engine</td>
-  <td><code>metric_store_num_get_errors</code></td>
+  <td>Number of shards removed due to disk space threshold</td>
+  <td><code>metric_store_pruned_shards_total</code></td>
   <td>counter</td>
   <td></td>
-  <td>If non-zero, this could indicate a problem with the storage engine</td>
 </tr>
 <tr>
-  <td>Number of timeout errors from PromQL Engine</td>
-  <td><code>metric_store_promql_timeout</code></td>
+  <td>metric_store_storage_days</td>
+  <td><code>Days of data stored on disk</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Size of the index</td>
+  <td><code>metric_store_index_size_bytes</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of unique series stored in the index</td>
+  <td><code>metric_store_series_count</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of unique measurements stored in the index</td>
+  <td><code>metric_store_measurements_count</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of errors encountered reading from the storage engine</td>
+  <td><code>metric_store_read_errors_total</code></td>
   <td>counter</td>
   <td></td>
-  <td>An increase here indicates that queries are taking too long to complete,
-  which could indicate that they are trying to retrieve too much data</td>
-</tr>
-<!-- hinted handoff metrics -->
-<tr>
-  <td>Number of points written into hinted handoff queue destined for node N</td>
-  <td><code>metric_store_num_queued_points_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>This is expected to increase when other nodes are restarting, but should
-  stop increasing when all nodes are back online</td>
 </tr>
 <tr>
-  <td>TBD</td>
-  <td><code>metric_store_num_queue_errors_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>If growing consistently, there may be an issue with how quickly
-  Metric Store is ingressing points</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>metric_store_num_replayed_points_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>Number of errors that occured while hinted handoff replayed data to node N</td>
-  <td><code>metric_store_num_replay_errors_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>If non-zero, some data may be missing. Review the metric-store logs
-  to better understand the nature of the error</td>
-</tr>
-<!-- end of hinted handoff metrics -->
-<tr>
-<td>Number of points dropped by the backpressure prevention diode when being written to node N</td>
-  <td><code>metric_store_diode_dropped_to_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>If growing consistently, there may be an issue with how quickly Metric
-  Store is ingressing points</td>
-</tr>
-<tr>
-  <td>Total points sent to node N by other nodes</td>
-  <td><code>metric_store_internode_sent_points_to_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>This should be steadily increasing at a relatively consistent rate. If
-  it stops increasing, this indicates a problem with your Metric Store nodes
-  or their internode connections</td>
-</tr>
-<tr>
-<td>Number of points dropped by the batcher when sending to node N</td>
-  <td><code>metric_store_batch_dropped_to_N</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>If this grows, try scaling up the size of your Metric Store VMs to have
-  more compute power</td>
-</tr>
-<tr>
-  <td>Number of points ingressed on the same node they're written to</td>
-  <td><code>metric_store_local_write_points</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>Should be steadily increasing at a relatively consistent rate</td>
-</tr>
-<tr>
-  <td>Number of points received from other nodes</td>
-  <td><code>metric_store_internode_received_points</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>Should be steadily increasing at a relatively consistent rate</td>
-</tr>
-<tr>
-  <td>The time it took to execute the PromQL Instant Query against Metric Store</td>
-  <td><code>metric_store_promql_instant_query_time</code></td>
+  <td>Time spent retrieving tag values from the storage engine</td>
+  <td><code>metric_store_tag_values_query_duration_seconds</code></td>
   <td>gauge</td>
-  <td>milliseconds</td>
   <td></td>
 </tr>
 <tr>
-  <td>The time it took to execute the PromQL Range Query against Metric Store</td>
-  <td><code>metric_store_promql_range_query_time</code></td>
+  <td>Time spent retrieving measurement names from the storage engine</td>
+  <td><code>metric_store_measurement_names_query_duration_seconds</code></td>
   <td>gauge</td>
-  <td>milliseconds</td>
   <td></td>
-</tr>
-<tr>
-  <td>Current size of the Metric Store Index</td>
-  <td><code>metric_store_index_size</code></td>
-  <td>gauge</td>
-  <td>byte</td>
-  <td></td>
-</tr>
-<tr>
-  <td>The number of series currently in Metric Store</td>
-  <td><code>metric_store_num_series</code></td>
-  <td>gauge</td>
-  <td>series</td>
-  <td></td>
-</tr>
-<tr>
-  <td>Current number of unique metric names stored in Metric Store</td>
-  <td><code>metric_store_num_measurements</code></td>
-  <td>gauge</td>
-  <td>measurement</td>
-  <td></td>
-</tr>
-<tr>
-  <td>The time it took to fetch all labels for <code>/api/v1/labels</code></td>
-  <td><code>metric_store_label_fields_query_time</code></td>
-  <td>gauge</td>
-  <td>milliseconds</td>
-  <td></td>
-</tr>
-<tr>
-  <td>The time it took to fetch values for <code>/api/v1/label/<label_name>/values</code></td>
-  <td><code>metric_store_label_tags_query_time</code></td>
-  <td>gauge</td>
-  <td>milliseconds</td>
-  <td></td>
-</tr>
-<tr>
-  <td>The time it took to fetch all metric names</td>
-  <td><code>metric_store_measurement_names_query_time</code></td>
-  <td>gauge</td>
-  <td>milliseconds</td>
-  <td></td>
-</tr>
-<tr>
-  <td>Current disk space used by the hinted handoff queue to write on node N</td>
-  <td><code>metric_store_queue_disk_usage_N</code></td>
-  <td>gauge</td>
-  <td>bytes</td>
-  <td></td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>metric_store_batch_chan_size_to_N</code></td>
-  <td>gauge</td>
-  <td>points</td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>metric_store_internode_send_time_to_N</code></td>
-  <td>gauge</td>
-  <td>milliseconds</td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>metric_store_ingress_payload_size</code></td>
-  <td>gauge</td>
-  <td>bytes</td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>metric_store_local_write_from_ingress_timer</code></td>
-  <td>gauge</td>
-  <td>milliseconds</td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>metric_store_local_write_from_internode_timer</code></td>
-  <td>gauge</td>
-  <td>milliseconds</td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>ingress_points_written</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>ingress_local_batches_dropped</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>ingress_remote_batches_dropped</code></td>
-  <td>counter</td>
-  <td></td>
-  <td>TBD</td>
-</tr>
-<tr>
-  <td>TBD</td>
-  <td><code>ingress_write_duration</code></td>
-  <td>gauge</td>
-  <td>nanoseconds</td>
-  <td>TBD</td>
 </tr>
 </table>
 
-### <a id='cf-auth-proxy-job-metrics'></a> CF Authorization Proxy Job Metrics
-<table>
+### <a id='metric-store-remote-metrics'></a> Metric Store Remote Metrics
+
+<table class="nice">
 <tr>
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
-  <th>Unit</th>
   <th>Notes</th>
 </tr>
 <tr>
-  <td>TBD</td>
-  <td><code>cf_auth_proxy_last_capiv3_apps_latency</code></td>
+  <td>Size of a replayer queue</td>
+  <td>metric_store_replayer_disk_usage_bytes</td>
   <td>gauge</td>
-  <td>nanoseconds</td>
-  <td>TBD</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
-  <td><code>cf_auth_proxy_last_capiv3_list_service_instances_latency</code></td>
-  <td>gauge</td>
-  <td>nanoseconds</td>
-  <td>TBD</td>
+  <td>Number of errors encountered writing to a replayer queue</td>
+  <td>metric_store_replayer_queue_errors_total</td>
+  <td>counter</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
-  <td><code>cf_auth_proxy_last_capiv3_apps_by_name_latency</code></td>
-  <td>gauge</td>
-  <td>nanoseconds</td>
-  <td>TBD</td>
+  <td>Number of bytes written to a replayer queue</td>
+  <td>metric_store_replayer_queued_bytes_total</td>
+  <td>counter</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
-  <td><code>cf_auth_proxy_total_read_time</code></td>
-  <td>gauge</td>
-  <td>nanoseconds</td>
-  <td>TBD</td>
+  <td>Number of errors encountered reading from a replayer queue</td>
+  <td>metric_store_replayer_read_errors_total</td>
+  <td>counter</td>
+  <td></td>
 </tr>
 <tr>
-  <td>TBD</td>
-  <td>The time it takes to fetch the data for /api/v1/query </td>
-  <td><code>cf_auth_proxy_total_query_time</code></td>
+  <td>Number of errors encountered replaying writes to a remote node</td>
+  <td>metric_store_replayer_replay_errors_total</td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of bytes successfully replayed to a remote node</td>
+  <td>metric_store_replayer_replayed_bytes_total</td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points dropped while writing to a remote node</td>
+  <td>metric_store_dropped_points_total</td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points successfully distributed to a remote node</td>
+  <td>metric_store_distributed_points_total</td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Time spent distributing points to a remote node</td>
+  <td>metric_store_distributed_request_duration_seconds</td>
   <td>gauge</td>
-  <td>nanoseconds</td>
-  <td>If this value in higher than normal, try scaling up the size of your
-  Metric Store VMs to have more compute power</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points collected by a metric-store instance from remote nodes</td>
+  <td>metric_store_collected_points_total</td>
+  <td>counter</td>
+  <td></td>
 </tr>
 </table>
