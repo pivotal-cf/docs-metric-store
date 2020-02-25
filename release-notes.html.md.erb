@@ -8,7 +8,9 @@ owner: Log Cache
 
 * Replication is now Availability Zone aware. **Note** for those upgrading from Beta versions this will cause a loss in metrics.
 * Updated our CA properties to help customers rotate both their Ops Manager and CredHub stored certificates.
-* Updated read sample limit to 20,000,000.
+* Updated read sample limit to 20,000,000, previously set to 1,000,000.
+* Removed PromScraper to inject Metric Store metrics into Firehose.
+  * Scraping Metric Store Prometheus endpoint via mTLS.
 
 ## <a id='v0.3.0'></a> v0.3.0 (Beta)
 
