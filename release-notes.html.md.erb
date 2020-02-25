@@ -2,6 +2,11 @@
 title: Metric Store for PCF Release Notes
 owner: Log Cache
 ---
+## <a id='v0.2.0'></a> v0.3.0 (Beta)
+
+* Introduced `http_total` metrics and `http_duration_seconds_*` histogram for request latency.
+* Fixed `metric_storage_duration_days` to report 0 when there is no data.
+* Fixed degraded query performance on large points (>500,000).
 
 ## <a id='v0.2.0'></a> v0.2.0 (Beta)
 
