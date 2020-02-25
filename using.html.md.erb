@@ -48,6 +48,57 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
   --data-urlencode "query=cpu{source_id=\"$(cf app --guid your-app-name)\"}"
 ```
 
+<table border="1" class="nice">
+  <thead>
+  <tr>
+    <th>Metric Name</th>
+    <th>Description</th>
+    <th>PromeQL Example</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>`cpu`</td>
+    <td>CPU usage percentage</td>
+    <td>`avg(cpu{source_id="$app_guid"})`</td>
+  </tr>
+  <tr>
+    <td>`memory`</td>
+    <td>Memory usage in bytes</td>
+    <td>`avg(memory{source_id="$app_guid"})`</td>
+  </tr>
+    
+  <tr>
+    <td>`memory_quota`</td>
+    <td>Memory Quota allocated in bytes</td>
+    <td>`memory{source_id="$app_guid"} / memory_quota{source_id="$app_guid"}`</td>
+  </tr>
+    
+  <tr>
+    <td>`disk`</td>
+    <td>Disk usage in bytes</td>
+    <td>`avg(disk{source_id="$app_guid"}) / 1024 / 1024 / 1024 # in gigabytes`</td>
+  </tr>
+    
+  <tr>
+    <td>`disk_quota`</td>
+    <td>Disk quota allocated in bytes</td>
+    <td>`disk{source_id="$app_guid"} / disk_quota{source_id="$app_guid"}`</td>
+  </tr>
+    
+  <tr>
+    <td>`http_total`</td>
+    <td>HTTP request counts includes status</td>
+    <td>`sum(rate(http_total{source_id="$app_guid"})) by (status)`</td>
+  </tr>
+  <tr>
+    <td>`http_duration_seconds_*`</td>
+    <td>HTTP request request latencies bucketed by duration</td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+
 ## <a id='querying'></a> Querying via Prometheus-Compatible HTTP Endpoints
 
 ### Notes on PromQL
