@@ -1,19 +1,19 @@
 ---
-title: Installing Metric Store for PCF
+title: Installing Metric Store
 owner: Log Cache
 ---
 
-This topic describes how to install Metric Store for PCF.
+This topic describes how to install Metric Store.
 
 ## <a id='prerequisites'></a> Prerequisites
 
 For a list of compatible Ops Manager and Pivotal Application Service (PAS) versions, see [Product Snapshot](index.html#snapshot).
 
-## <a id='install'></a> Install Metric Store for PCF
+## <a id='install'></a> Install Metric Store
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/app-metrics-store-pcf/).
 1. Navigate to the Ops Manager Installation Dashboard and click Import a Product to upload the product file.
-1. Under the Import a Product button, click + next to the version number of Metric Store for PCF. This adds the tile to your staging area.
+1. Under the Import a Product button, click + next to the version number of Metric Store. This adds the tile to your staging area.
 
 ### <a id='network-configuration'></a> Create a Network
 
@@ -25,24 +25,24 @@ If you do not want to use an existing network for Metric Store, you can create a
 1. Enter the network details.
 1. Click **Save**.
 
-### <a id='tile-configuration'></a> Configure the Metric Store for PCF Tile
+### <a id='tile-configuration'></a> Configure the Metric Store Tile
 
-To configure the Metric Store for PCF tile, perform the following steps:
+To configure the Metric Store tile, perform the following steps:
 
-1. Click the **Metric Store for PCF** tile on the Ops Manager Installation Dashboard.
+1. Click the **Metric Store** tile on the Ops Manager Installation Dashboard.
 1. Navigate to **Assign AZs and Networks** and do the following:
     1. Select an Availability Zone (AZ) for placing singleton jobs.
     1. Select one or more AZs for balancing other jobs.
 
 		<p class="note"><strong>Note</strong>: To create a highly available environment, Pivotal recommends selecting multiple AZs.</p>
 
-    1. Select **Network** for installing Metric Store for PCF.
+    1. Select **Network** for installing Metric Store.
     1. Click **Save**.
 
 
-    ### <a id='tile-resources'></a> Metric Store for PCF Resources
+    ### <a id='tile-resources'></a> Metric Store Resources
 
-You can configure Metric Store for PCF resources in the **Resource Config** section of the Metric Store for PCF tile. By default, Metric Store for PCF automatically selects the instance type that is best suited for the deployment.
+You can configure Metric Store resources in the **Resource Config** section of the Metric Store tile. By default, Metric Store automatically selects the instance type that is best suited for the deployment.
 
 
 <table border="1" class="nice">
@@ -73,6 +73,6 @@ You can configure Metric Store for PCF resources in the **Resource Config** sect
 </table>
 
 
-### <a id='verifying'></a> Verifying installation of Metric Store for PCF
+### <a id='verifying'></a> Verifying installation of Metric Store
 
-Please see the Authorization and Authentication section of the topic [Using Metric Store for PCF](using.html#authorization-authentication).
+Please see the Authorization and Authentication section of the topic [Using Metric Store](using.html#authorization-authentication).
