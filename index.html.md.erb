@@ -1,9 +1,9 @@
 ---
-title: Metric Store for PCF
+title: Metric Store
 owner: Log Cache
 ---
 
-## <a id='about'></a> About Metric Store for PCF
+## <a id='about'></a> About Metric Store
 
 Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem. It is multi-tenant aware (the auth proxy ensures that you only have access to metrics from your apps), easy to query (it is compatible with the [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)), and has a powerful storage engine (the [InfluxDB storage engine](https://docs.influxdata.com/influxdb) has built-in compression and a memory-efficient series index).
 
@@ -11,7 +11,7 @@ Metric Store provides a persistent storage layer for metrics sent through the Lo
 - **Ubiquitous Query Language** Metric Store is compatible with PromQL and Prometheus API Query endpoints.
 - **Powerful Storage Engine** The InfluxDB storage engine has built-in compression and a memory-efficient series index.
 
-Metric Store for PCF offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
+Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
 
 ### <a id='oss-metric-store'></a> More Information on Open Source Metric Store
 
@@ -20,7 +20,7 @@ Metric Store for PCF offers multi-node deployments, data replication, hinted han
 
 ## <a id='snapshot'></a> Product Snapshot
 
-The following table provides version and version-support information about Metric Store for PCF.
+The following table provides version and version-support information about Metric Store.
 
 <table class="nice">
     <th>Element</th>
@@ -49,6 +49,6 @@ The following table provides version and version-support information about Metri
 
 ## <a id="limitations"></a>Limitations
 
-Metric Store for PCF has the following limitations:
+Metric Store has the following limitations:
 
-- Horizontally scaling Metric Store for PCF currently results in data loss. Vertical scaling is recommended at this time.
+- Horizontally scaling Metric Store currently results in data loss. Vertical scaling is recommended at this time.
