@@ -94,7 +94,7 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
   <tr>
     <td>`http_duration_seconds_*`</td>
     <td>HTTP request request latencies bucketed by duration</td>
-    <td></td>
+    <td>`histogram_quantile(0.95, sum(rate(http_duration_seconds_bucket[5m])) by (le))`</td>
   </tr>
   </tbody>
 </table>
