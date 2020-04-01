@@ -55,37 +55,37 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
   <tr>
     <th>Metric Name</th>
     <th>Description</th>
-    <th>PromeQL Example</th>
+    <th>PromQL Example</th>
   </tr>
   </thead>
   <tbody>
   <tr>
-    <td>`cpu`</td>
+    <td>cpu</td>
     <td>CPU usage percentage</td>
-    <td>`avg(cpu{source_id="$app_guid"})`</td>
+    <td><code>avg(cpu{source_id="$app_guid"})</code></td>
   </tr>
   <tr>
-    <td>`memory`</td>
+    <td>memory</td>
     <td>Memory usage in bytes</td>
-    <td>`avg(memory{source_id="$app_guid"})`</td>
+    <td><code>avg(memory{source_id="$app_guid"})</code></td>
   </tr>
     
   <tr>
-    <td>`memory_quota`</td>
+    <td>memory_quota</td>
     <td>Memory Quota allocated in bytes</td>
-    <td>`memory{source_id="$app_guid"} / memory_quota{source_id="$app_guid"}`</td>
+    <td><code>memory{source_id="$app_guid"} / memory_quota{source_id="$app_guid"}</code></td>
   </tr>
     
   <tr>
-    <td>`disk`</td>
+    <td>disk</td>
     <td>Disk usage in bytes</td>
-    <td>`avg(disk{source_id="$app_guid"}) / 1024 / 1024 / 1024 # in gigabytes`</td>
+    <td><code>avg(disk{source_id="$app_guid"}) / 1024 / 1024 / 1024 # in gigabytes</code></td>
   </tr>
     
   <tr>
-    <td>`disk_quota`</td>
+    <td>disk_quota</td>
     <td>Disk quota allocated in bytes</td>
-    <td>`disk{source_id="$app_guid"} / disk_quota{source_id="$app_guid"}`</td>
+    <td><code>disk{source_id="$app_guid"} / disk_quota{source_id="$app_guid"}</code></td>
   </tr>
     
   <tr>
