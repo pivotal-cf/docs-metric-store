@@ -2,6 +2,17 @@
 title: Metric Store Release Notes
 owner: Log Cache
 ---
+## <a id='v1.4.1'></a> v1.4.1
+
+**Release Date:** April 27, 2020
+
+* Updated the `opsmanager_syslog` property to true to allow operators to egress logs to a syslog destination. 
+
+### <a id='known-issues'></a> Known Issues
+
+This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` label as 0 as opposed to the true node index.
+
+
 ## <a id='v1.4.0'></a> v1.4.0
 
 **Release Date:** March 31, 2020
@@ -11,6 +22,10 @@ owner: Log Cache
 * Updated read sample limit to 20,000,000, previously set to 1,000,000.
 * Removed PromScraper to inject Metric Store metrics into Firehose.
   * Scraping Metric Store Prometheus endpoint via mTLS.
+
+### <a id='known-issues'></a> Known Issues
+
+This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` label as 0 as opposed to the true node index.
 
 ## <a id='v0.3.0'></a> v0.3.0 (Beta)
 
