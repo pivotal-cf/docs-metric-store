@@ -2,6 +2,13 @@
 title: Metric Store Release Notes
 owner: Log Cache
 ---
+
+## <a id='v1.4.2'></a> v1.4.2
+
+**Release Date:** April 28, 2020
+
+* Resolves issue with `http_total` metric to include correct `node_index` label value.
+
 ## <a id='v1.4.1'></a> v1.4.1
 
 **Release Date:** April 27, 2020
@@ -10,7 +17,7 @@ owner: Log Cache
 
 ### <a id='known-issues'></a> Known Issues
 
-This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` label as 0 as opposed to the true node index.
+This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` label as 0 as opposed to the true node index. Resolved release 1.4.2.
 
 
 ## <a id='v1.4.0'></a> v1.4.0
@@ -25,7 +32,7 @@ This release has a bug in the `http_total` metric when the Metric Store is runni
 
 ### <a id='known-issues'></a> Known Issues
 
-This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` label as 0 as opposed to the true node index.
+This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` label as 0 as opposed to the true node index.  Resolved release 1.4.2.
 
 ## <a id='v0.3.0'></a> v0.3.0 (Beta)
 
