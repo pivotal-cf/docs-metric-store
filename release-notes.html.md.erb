@@ -3,11 +3,25 @@ title: Metric Store Release Notes
 owner: Log Cache
 ---
 
+## <a id='v1.4.3'></a> v1.4.3
+
+**Release Date:** August 17, 2020
+
+* This release fixes a memory leak that would cause the Metric Store to slowly run out of memory due to not cleaning up closed network connection go routines.
+* Updated debug and metrics endpoints to be on different ports. 
+* Updated Golang to 1.13.12 and Prometheus to 2.19.1.
+
+### <a id='known-issues'></a> Known Issues
+* Found in 1.4.2, some customers are experience points being dropped when metrics are transferred between nodes.
+
 ## <a id='v1.4.2'></a> v1.4.2
 
 **Release Date:** April 28, 2020
 
 * Resolves issue with `http_total` metric to include correct `node_index` label value.
+
+### <a id='known-issues'></a> Known Issues
+* Found in 1.4.2, some customers are experience points being dropped when metrics are transferred between nodes.
 
 ## <a id='v1.4.1'></a> v1.4.1
 
