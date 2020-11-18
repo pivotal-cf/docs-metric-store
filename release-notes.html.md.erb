@@ -5,11 +5,11 @@ owner: Log Cache
 
 ## <a id='v1.5.1'></a> v1.5.1
 
-**Release Date:** November 7, 2020
+**Release Date:** November 18, 2020
 
 * Replication factor defaulted to 2.
   * This will double previous storage requirements, as metrics going forward will be replicated across nodes.
-  * Metrics stored prior to this upgrade will continue to exist, but only on a single node. This will result in inconsostent query results for non-replicated metrics, depending on which node gets queried.
+  * Metrics stored prior to this upgrade will continue to exist, but only on a single node. This will result in inconsistent query results for non-replicated metrics, depending on which node gets queried.
 * Include and use route registration health check.
 * The `replication factor` is configurable from OpsManager
 * The `max concurrent queries` is configurable from OpsManager
