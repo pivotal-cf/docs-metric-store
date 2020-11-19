@@ -13,6 +13,8 @@ Metric Store provides a persistent storage layer for metrics sent through the Lo
 
 Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
 
+<p class="note"><strong>Note</strong>: The only officially supported use case for the Metric Store product is as the backing Time Series Database for [App Metrics v2.0](https://docs.pivotal.io/app-metrics/2-0/) & [TAS v2.9+ Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html). Use cases outside of these bounds have no guarantee of continued support or availability.</p>
+
 ### <a id='oss-metric-store'></a> More Information on Open Source Metric Store
 
 - [Open Source Release Blog post](https://content.pivotal.io/blog/metric-store-a-cloud-native-time-series-database-for-cloud-foundry)
@@ -52,4 +54,4 @@ The following table provides version and version-support information about Metri
 Metric Store has the following limitations:
 
 - Horizontally scaling Metric Store currently results in data loss. Vertical scaling is recommended at this time.
-- Platforms are ever changing and we cannot guarantee metric stability. Using Metric Store through other products like [App Metrics](https://docs.pivotal.io/app-metrics/2-0/) or [Apps Manager](https://docs.pivotal.io/platform/application-service/2-8/console/index.html) will be supported use cases. Using the Metric Store manually through endpoints, the user will need to be aware of changes through Platform upgrades.
+- Platforms are ever changing and we cannot guarantee metric stability. Using Metric Store through products like [App Metrics](https://docs.pivotal.io/app-metrics/2-0/) or [Apps Manager](https://docs.pivotal.io/platform/application-service/2-8/console/index.html) will be supported use cases. Using the Metric Store manually through endpoints, the user will need to be aware of changes through Platform upgrades.
