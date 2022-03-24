@@ -1,12 +1,294 @@
 ---
-title: Using PCF Metric Store
+title: Querying the Metric Store
 owner: Log Cache
 ---
 
-This topic describes configuring and using PCF Metric Store.
+This topic describes configuring and using Metric Store.
 
 ## <a id='overview'></a> Overview
 
+Metric Store implements the Prometheus Query Language for querying metrics for which you have access.
+
 ## <a id='prerequisites'></a> Prerequisites
 
-## <a id='configure'></a> Configure PCF Metric Store
+- Completed [installation](installing.html) of the Metric Store Tile.
+- [curl](https://github.com/curl/curl)
+- [CF Auth Token](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+
+## <a id='using'></a> Using Metric Store
+
+### <a id='authorization-authentication'></a> Authorization & Authentication
+
+When querying the API via HTTPS, each request must have the `Authorization`
+header set with a UAA provided token.
+
+#### For Metric Store admins
+
+As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries.
+You will need to add either `doppler.firehose` or `logs.admin` scope to your admin account.
+
+You then should be able to run the following query:
+
+```shell
+cf login
+curl -vvv -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-DOMAIN/api/v1/label/source_id/values
+```
+
+The status code will be 200 is everything is working properly.
+
+#### For PAS developers
+
+As a PAS developer, you can query metrics for applications you have access to.
+When querying with PromQL, you must specify the `source_id` label with the application `guid` as the label value.
+
+For example:
+
+```shell
+curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" \
+  --data-urlencode "query=cpu{source_id=\"$(cf app --guid your-app-name)\"}"
+```
+
+##### Standard PAS application metrics
+
+<table border="1" class="nice">
+  <thead>
+  <tr>
+    <th>Metric Name</th>
+    <th>Description</th>
+    <th>PromQL Example</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>cpu</td>
+    <td>CPU usage percentage</td>
+    <td><code>avg(cpu{source_id="$app_guid"})</code></td>
+  </tr>
+  <tr>
+    <td>memory</td>
+    <td>Memory usage in bytes</td>
+    <td><code>avg(memory{source_id="$app_guid"})</code></td>
+  </tr>
+
+  <tr>
+    <td>memory_quota</td>
+    <td>Memory Quota allocated in bytes</td>
+    <td><code>memory{source_id="$app_guid"} / memory_quota{source_id="$app_guid"}</code></td>
+  </tr>
+
+  <tr>
+    <td>disk</td>
+    <td>Disk usage in bytes</td>
+    <td><code>avg(disk{source_id="$app_guid"}) / 1024 / 1024 / 1024 # in gigabytes</code></td>
+  </tr>
+
+  <tr>
+    <td>disk_quota</td>
+    <td>Disk quota allocated in bytes</td>
+    <td><code>disk{source_id="$app_guid"} / disk_quota{source_id="$app_guid"}</code></td>
+  </tr>
+
+  <tr>
+    <td>http_total</td>
+    <td>HTTP request counts includes status</td>
+    <td><code>sum(rate(http_total{source_id="$app_guid"})) by (status)</code></td>
+  </tr>
+  <tr>
+    <td>http_duration_seconds_*</td>
+    <td>HTTP request request latencies bucketed by duration</td>
+    <td><code>histogram_quantile(0.95, sum(rate(http_duration_seconds_bucket[5m])) by (le))</code></td>
+  </tr>
+  </tbody>
+</table>
+
+## <a id='querying'></a> Querying via Prometheus-Compatible HTTP Endpoints
+
+### Notes on PromQL
+The ultimate goal of these endpoints is to create a fully-compliant,
+Prometheus-compatible interface. This should allow tools such as Grafana to
+work directly with Metric Store without any additional translation.
+
+A valid PromQL metric name consists of the character [a-Z][0-9] and underscore. Names can begin with [a-Z] or underscore. Names cannot begin with [0-9].
+As a measure to work with existing metrics that do not comply with the above format a conversion process takes place when matching on metric names.
+Any character that is not in the set of valid characters is converted to an underscore.
+The metric is not changed in the store.
+
+e.g., to match on a metric name ``http.latency`` use the name ``http_latency`` as a search term.
+
+### **GET** `/api/v1/query`
+
+Issues a PromQL instant query against Metric Store data. You can read more
+detail in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#instant-queries).
+
+Query Parameters:
+
+- **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
+- **time** is an optional UNIX timestamp in seconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`).
+
+<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" --data-urlencode 'query=metric_name_0{source_id="source_id_0"}'
+```
+
+##### Response Body
+```json
+{
+  "status": "success",
+  "data": {
+    "resultType": "vector",
+    "result": [
+      {
+        "metric": {"__name__": "metric_name"},
+        "value": [ "<timestamp>", "<value>" ]
+      },
+      "..."
+    ]
+  }
+}
+```
+
+### **GET** `/api/v1/query_range`
+
+Issues a PromQL range query against Metric Store data. You can read more detail
+in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries).
+
+Query Parameters:
+
+- **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
+- **start** is a UNIX timestamp in seconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[start..end)`
+- **end** is a UNIX timestamp in seconds or RFC3339. (e.g. `date +%s`). End time is exclusive. `[start..end)`
+- **step** is a query resolution step width in `duration` format or float number of seconds.
+
+<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query_range" \
+    --data-urlencode 'query=metric_name_0{source_id="source_id_0"}' \
+    --data-urlencode "start=$(date -d '24 hours ago' +%s)" \
+    --data-urlencode "end=$(date +%s)" \
+    --data-urlencode 'step=1h'
+```
+
+##### Response Body
+```json
+{
+  "status": "success",
+  "data": {
+    "resultType": "matrix",
+    "result": [
+      {
+        "metric": {"__name__": "metric_name"},
+        "values": [
+          [ "<timestamp>", "<value>" ],
+          "..."
+        ]
+      },
+      "..."
+    ]
+  }
+}
+```
+
+### **GET** `/api/v1/series`
+
+Issues a PromQL series query against Metric Store data. You can read more detail
+in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#finding-series-by-label-matchers).
+
+<p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
+
+Query Parameters:
+
+- **start** is a UNIX timestamp in seconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`). Start time is inclusive. `[start..end)`
+- **end** is a UNIX timestamp in seconds or RFC3339. (e.g. `date +%s`). End time is exclusive. `[start..end)`
+- **match[]** is a [series selector](https://prometheus.io/docs/prometheus/latest/querying/basics/#time-series-selectors).
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/series" \
+    --data-urlencode 'match[]=metric_name_0' \
+    --data-urlencode 'match[]=metric_name_1' \
+    --data-urlencode "start=$(date -d '24 hours ago' +%s)" \
+    --data-urlencode "end=$(date +%s)"
+```
+
+##### Response Body
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "__name__": "metric_name_0",
+      "source_id": "source_id_0",
+      "...": ".."
+    },
+    "..."
+  ]
+}
+```
+
+### **GET** `/api/v1/labels`
+
+Retrieve all label names for authorized source ids from the store.
+
+<p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
+
+##### Request
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN/api/v1/labels"
+```
+
+##### Response Body
+
+```json
+{
+  "status": "success",
+  "data": [
+    "__name__",
+    "deployment",
+    "..."
+    "ip",
+    "origin",
+    "request_type",
+    "source_id",
+    "status_code",
+    "unit"
+  ]
+}
+```
+
+### **GET** `/api/v1/label/<label_name>/values`
+
+Retrieve label values by `label_name` for all authorized source ids. The special label `__name__` can be used to retrieve metric names from the store.
+
+<p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
+
+##### Request
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN/api/v1/label/<label-name>/values"
+```
+
+##### Response Body
+
+```json
+{
+    "status":"success",
+    "data":["10", "1"]
+}
+```
+
+##### Request
+
+```shell
+$ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN/api/v1/label/__name__/values"
+```
+
+##### Response Body
+
+```json
+{
+    "status":"success",
+    "data":["metric_name_0", "metric_name_1", "..." ]
+}
+```
