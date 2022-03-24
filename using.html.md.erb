@@ -24,7 +24,7 @@ header set with a UAA provided token.
 
 #### For Metric Store admins
 
-As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries. 
+As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries.
 You will need to add either `doppler.firehose` or `logs.admin` scope to your admin account.
 
 You then should be able to run the following query:
@@ -69,34 +69,34 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
     <td>Memory usage in bytes</td>
     <td><code>avg(memory{source_id="$app_guid"})</code></td>
   </tr>
-    
+
   <tr>
     <td>memory_quota</td>
     <td>Memory Quota allocated in bytes</td>
     <td><code>memory{source_id="$app_guid"} / memory_quota{source_id="$app_guid"}</code></td>
   </tr>
-    
+
   <tr>
     <td>disk</td>
     <td>Disk usage in bytes</td>
     <td><code>avg(disk{source_id="$app_guid"}) / 1024 / 1024 / 1024 # in gigabytes</code></td>
   </tr>
-    
+
   <tr>
     <td>disk_quota</td>
     <td>Disk quota allocated in bytes</td>
     <td><code>disk{source_id="$app_guid"} / disk_quota{source_id="$app_guid"}</code></td>
   </tr>
-    
+
   <tr>
-    <td>`http_total`</td>
+    <td>http_total</td>
     <td>HTTP request counts includes status</td>
-    <td>`sum(rate(http_total{source_id="$app_guid"})) by (status)`</td>
+    <td><code>sum(rate(http_total{source_id="$app_guid"})) by (status)</code></td>
   </tr>
   <tr>
-    <td>`http_duration_seconds_*`</td>
+    <td>http_duration_seconds_*</td>
     <td>HTTP request request latencies bucketed by duration</td>
-    <td>`histogram_quantile(0.95, sum(rate(http_duration_seconds_bucket[5m])) by (le))`</td>
+    <td><code>histogram_quantile(0.95, sum(rate(http_duration_seconds_bucket[5m])) by (le))</code></td>
   </tr>
   </tbody>
 </table>
@@ -138,9 +138,9 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
   "data": {
     "resultType": "vector",
     "result": [
-      { 
-        "metric": {"__name__": "metric_name"}, 
-        "value": [ "<timestamp>", "<value>" ] 
+      {
+        "metric": {"__name__": "metric_name"},
+        "value": [ "<timestamp>", "<value>" ]
       },
       "..."
     ]
