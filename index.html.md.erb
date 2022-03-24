@@ -7,9 +7,9 @@ owner: Log Cache
 
 Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem. It is multi-tenant aware (the auth proxy ensures that you only have access to metrics from your apps), easy to query (it is compatible with the [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)), and has a powerful storage engine (the [InfluxDB storage engine](https://docs.influxdata.com/influxdb) has built-in compression and a memory-efficient series index).
 
-- **Multi-tenant aware** Application Developers have access to their own metrics.
-- **Ubiquitous Query Language** Metric Store is compatible with PromQL and Prometheus API Query endpoints.
-- **Powerful Storage Engine** The InfluxDB storage engine has built-in compression and a memory-efficient series index.
+- **Multi-tenant aware:** Application Developers have access to their own metrics.
+- **Ubiquitous Query Language:** Metric Store is compatible with PromQL and Prometheus API Query endpoints.
+- **Powerful Storage Engine:** The InfluxDB storage engine has built-in compression and a memory-efficient series index.
 
 Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
 
