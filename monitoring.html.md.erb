@@ -1,0 +1,254 @@
+---
+title: Monitoring Metric Store
+owner: Log Cache
+---
+
+This topic describes how to monitor Metric Store. It includes key scaling indicators (KSIs) to guide Metric Store scaling decisions.
+
+## <a id='overview'></a> Overview
+
+Metric Store can be scaled vertically at this time. When disk resources are reaching complete consumption, Metric Store will start dropping the oldest data first. When memory and/or CPU resources are reaching complete consumption, Metric Store should be vertically scaled.
+
+## <a id='ksi'></a> Key Scaling Indicators
+
+- [nozzle_dropped](monitoring.html#nozzle_dropped)
+
+## <a id='metrics'></a> Metric Emitted by Metric Store
+
+Metric Store publishes metrics for monitoring the Metric Store itself.
+You can use these metrics to observe the health of the Metric Store and determine if the VMs and disks are appropriately scaled.
+
+### <a id='nozzle-metrics'></a> Nozzle Job Metrics
+
+The nozzle is the process that ingresses envelopes from Loggregator's Reverse
+Log Proxy (RLP).
+
+<table class="nice">
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Number of envelopes sent to collocated Metric Store</td>
+  <td><code>metric_store_nozzle_ingress_envelopes_total</code></td>
+  <td>counter</td>
+  <td>When increasing, nozzle is correctly consuming from the RLP</td>
+</tr>
+<tr>
+  <td>Number of envelopes dropped when reading from RLP</td>
+  <td><a id='nozzle_dropped'></a><code>metric_store_nozzle_dropped_envelopes_total</code></td>
+  <td>counter</td>
+  <td>If this number is increasing at a steady rate, it may indicate that you
+  need scale up the size of your VMs</td>
+</tr>
+<tr>
+  <td>Number of points dropped in outbound channel</td>
+  <td><code>metric_store_nozzle_dropped_points_total</code></td>
+  <td>counter</td>
+  <td>Should always be zero. If not, it may be useful in debugging.</td>
+</tr>
+<tr>
+  <td>Number of points written to its collocated Metric Store</td>
+  <td><code>metric_store_nozzle_egress_points_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of errors writing to a remote node</td>
+  <td><code>metric_store_nozzle_egress_errors_total</code></td>
+  <td>counter</td>
+  <td>If this number consistently increasing, it may indicate network issues or an
+  overloaded Metric Store node</td>
+</tr>
+<tr>
+  <td>Total duration spent writing to points.</td>
+  <td><code>metric_store_nozzle_egres_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+</table>
+
+### <a id='metric-store-job-metrics'></a> CF Auth Proxy Job Metrics
+
+<table>
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Duration in seconds of requests made to the auth proxy </td>
+  <td><code>metric_store_auth_proxy_request_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Duration in seconds of external requests made to CAPI</td>
+  <td><code>metric_store_auth_proxy_capi_request_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+</table>
+
+### <a id='metric-store-job-metrics'></a> Metric Store Job Metrics
+
+<table>
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Number of points ingressed to colocated Metric Store</td>
+  <td><code>metric_store_ingress_points_total</code></td>
+  <td>counter</td>
+  <td>This should be steadily increasing at a relatively consistent rate</td>
+</tr>
+<tr>
+  <td>Number of points succesfully written to storage engine</td>
+  <td><code>metric_store_written_points_total</code></td>
+  <td>counter</td>
+  <td>This should be steadily increasing at a relatively consistent rate</td>
+</tr>
+<tr>
+  <td>Time spent writing points to the storage engine</td>
+  <td><code>metric_store_write_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Percentage of free space on persistent disk</td>
+  <td><code>metric_store_disk_free_ratio</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of shards removed due to time-based expiration</td>
+  <td><code>metric_store_expired_shards_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of shards removed due to disk space threshold</td>
+  <td><code>metric_store_pruned_shards_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>metric_store_storage_days</td>
+  <td><code>Days of data stored on disk</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Size of the index</td>
+  <td><code>metric_store_index_size_bytes</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of unique series stored in the index</td>
+  <td><code>metric_store_series_count</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of unique measurements stored in the index</td>
+  <td><code>metric_store_measurements_count</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of errors encountered reading from the storage engine</td>
+  <td><code>metric_store_read_errors_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Time spent retrieving tag values from the storage engine</td>
+  <td><code>metric_store_tag_values_query_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Time spent retrieving measurement names from the storage engine</td>
+  <td><code>metric_store_measurement_names_query_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+</table>
+
+### <a id='metric-store-remote-metrics'></a> Metric Store Remote Metrics
+
+<table class="nice">
+<tr>
+  <th>Reports</th>
+  <th>Metric</th>
+  <th>Type</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>Size of a replayer queue</td>
+  <td><code>metric_store_replayer_disk_usage_bytes</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of errors encountered writing to a replayer queue</td>
+  <td><code>metric_store_replayer_queue_errors_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of bytes written to a replayer queue</td>
+  <td><code>metric_store_replayer_queued_bytes_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of errors encountered reading from a replayer queue</td>
+  <td><code>metric_store_replayer_read_errors_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of errors encountered replaying writes to a remote node</td>
+  <td><code>metric_store_replayer_replay_errors_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of bytes successfully replayed to a remote node</td>
+  <td><code>metric_store_replayer_replayed_bytes_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points dropped while writing to a remote node</td>
+  <td><code>metric_store_dropped_points_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points successfully distributed to a remote node</td>
+  <td><code>metric_store_distributed_points_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Time spent distributing points to a remote node</td>
+  <td><code>metric_store_distributed_request_duration_seconds</code></td>
+  <td>gauge</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points collected by a metric-store instance from remote nodes</td>
+  <td><code>metric_store_collected_points_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+</table>

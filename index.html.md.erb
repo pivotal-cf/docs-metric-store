@@ -1,0 +1,57 @@
+---
+title: Metric Store
+owner: Log Cache
+---
+
+## <a id='about'></a> About Metric Store
+
+Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem. It is multi-tenant aware (the auth proxy ensures that you only have access to metrics from your apps), easy to query (it is compatible with the [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)), and has a powerful storage engine (the [InfluxDB storage engine](https://docs.influxdata.com/influxdb) has built-in compression and a memory-efficient series index).
+
+- **Multi-tenant aware:** Application Developers have access to their own metrics.
+- **Ubiquitous Query Language:** Metric Store is compatible with PromQL and Prometheus API Query endpoints.
+- **Powerful Storage Engine:** The InfluxDB storage engine has built-in compression and a memory-efficient series index.
+
+Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
+
+<p class="note"><strong>Note</strong>: The only officially supported use case for the Metric Store product is as the backing Time Series Database for <a href="https://docs.pivotal.io/app-metrics/2-0/">App Metrics v2.0</a> and <a href="https://docs.pivotal.io/platform/application-service/2-9/console/index.html">TAS v2.9+ Apps Manager</a>. Use cases outside of these bounds have no guarantee of continued support or availability.</p>
+
+### <a id='oss-metric-store'></a> More Information on Open Source Metric Store
+
+- [Open Source Release Blog post](https://content.pivotal.io/blog/metric-store-a-cloud-native-time-series-database-for-cloud-foundry)
+- [Open Source README](https://github.com/cloudfoundry/metric-store-release/blob/develop/README.md)
+
+## <a id='snapshot'></a> Product Snapshot
+
+The following table provides version and version-support information about Metric Store.
+
+<table class="nice">
+    <th>Element</th>
+    <th>Details</th>
+    <tr>
+        <td>Version</td>
+        <td>v1.6.0</td>
+    </tr>
+    <tr>
+        <td>Release date</td>
+        <td>MONTH DAY, YEAR</td>
+    </tr>
+    <tr>
+        <td>Compatible Ops Manager version(s)</td>
+        <td>v2.6 and later</td>
+    </tr>
+    <tr>
+        <td>Compatible Tanzu Application Service version(s)</td>
+        <td>v2.7.x, v2.8.x, v2.9.x, 2.10.x, 2.11.x, 2.12.x</td>
+    </tr>
+    <tr>
+        <td>IaaS support</td>
+        <td>AWS, Azure, GCP, and vSphere</td>
+    </tr>
+</table>
+
+## <a id="limitations"></a>Limitations
+
+Metric Store has the following limitations:
+
+- Horizontally scaling Metric Store currently results in data loss. Vertical scaling is recommended at this time.
+- Platforms are ever changing and we cannot guarantee metric stability. Using Metric Store through products like [App Metrics](https://docs.pivotal.io/app-metrics/2-0/) or [Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html) will be supported use cases. Using the Metric Store manually through endpoints, the user will need to be aware of changes through Platform upgrades.

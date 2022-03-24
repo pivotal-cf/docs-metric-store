@@ -2,8 +2,7 @@
 
 | Branch Name| Use for… |
 |------------| ---------|
-| master     | staged here: https://docs-pcf-staging.sc2-04-pcf1-apps.oc.vmware.com/metric-store/1-5/ (we should change this to 1-6, really) |
-| 1.5        | v1.5 (https://docs.pivotal.io/metric-store/1-5/)   |
-| 1.4        | v1.4 (https://docs.pivotal.io/metric-store/1-4/) |
-| 0.3        | v0.3 (https://docs.pivotal.io/metric-store/0-3/) |
-| 0.2        | v0.2 (https://docs.pivotal.io/metric-store/0-2/) |
+| master     | staged here: https://docs-staging.vmware.com/en/Metric-Store/1.6/metric-store/GUID-index.html |
+| 1.5        | v1.5 (https://docs.vmware.com/en/Metric-Store/1.5/metric-store/GUID-index.html) |
+| 1.4        | v1.4 (https://docs.vmware.com/en/Metric-Store/1.4/metric-store/GUID-index.html) |
+| 1.3        | v1.3 (https://docs.vmware.com/en/Metric-Store/1.3/metric-store/GUID-index.html) |
