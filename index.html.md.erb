@@ -5,15 +5,24 @@ owner: Log Cache
 
 ## <a id='about'></a> About Metric Store
 
-Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem. It is multi-tenant aware (the auth proxy ensures that you only have access to metrics from your apps), easy to query (it is compatible with the [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)), and has a powerful storage engine (the [InfluxDB storage engine](https://docs.influxdata.com/influxdb) has built-in compression and a memory-efficient series index).
+Metric Store provides a persistent storage layer for metrics sent through the Loggregator subsystem.
+It is multi-tenant-aware, because the auth proxy ensures that you only have access to metrics from your
+apps, and easy to query because it's compatible with
+[PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/).
+It also has the powerful [InfluxDB storage engine](https://docs.influxdata.com/influxdb), which
+has built-in compression and a memory-efficient series index.
 
 - **Multi-tenant aware:** Application Developers have access to their own metrics.
 - **Ubiquitous Query Language:** Metric Store is compatible with PromQL and Prometheus API Query endpoints.
 - **Powerful Storage Engine:** The InfluxDB storage engine has built-in compression and a memory-efficient series index.
 
-Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in a highly-available configuration.
+Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in
+a highly-available configuration.
 
-<p class="note"><strong>Note</strong>: The only officially supported use case for the Metric Store product is as the backing Time Series Database for <a href="https://docs.pivotal.io/app-metrics/2-0/">App Metrics v2.0</a> and <a href="https://docs.pivotal.io/platform/application-service/2-9/console/index.html">TAS v2.9+ Apps Manager</a>. Use cases outside of these bounds have no guarantee of continued support or availability.</p>
+> **Note:** The only officially supported use case for the Metric Store product is as the backing
+> Time Series Database for [App Metrics v2.0](https://docs.pivotal.io/app-metrics/2-0/)
+> and the [TAS v2.9 and later Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html).
+> Use cases outside of these bounds have no guarantee of continued support or availability.
 
 ### <a id='oss-metric-store'></a> More Information on Open Source Metric Store
 
@@ -33,14 +42,14 @@ The following table provides version and version-support information about Metri
     </tr>
     <tr>
         <td>Release date</td>
-        <td>November 19, 2021</td>
+        <td>August 16, 2022</td>
     </tr>
     <tr>
-        <td>Compatible Ops Manager version(s)</td>
+        <td>Compatible Ops Manager versions</td>
         <td>v2.6 and later</td>
     </tr>
     <tr>
-        <td>Compatible Tanzu Application Service version(s)</td>
+        <td>Compatible Tanzu Application Service versions</td>
         <td>v2.7.x, v2.8.x, v2.9.x, 2.10.x, 2.11.x, 2.12.x, 2.13.x</td>
     </tr>
     <tr>
@@ -53,5 +62,11 @@ The following table provides version and version-support information about Metri
 
 Metric Store has the following limitations:
 
-- Horizontally scaling Metric Store currently results in data loss. Vertical scaling is recommended at this time.
-- Platforms are ever changing and we cannot guarantee metric stability. Using Metric Store through products like [App Metrics](https://docs.pivotal.io/app-metrics/2-0/) or [Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html) will be supported use cases. Using the Metric Store manually through endpoints, the user will need to be aware of changes through Platform upgrades.
+- Horizontally scaling Metric Store currently results in data loss.
+  Vertical scaling is recommended at this time.
+- Platforms are ever changing and we cannot guarantee metric stability.
+  Using Metric Store through products such as [App Metrics](https://docs.pivotal.io/app-metrics/2-0/)
+  or [Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html)
+  will be supported use cases.
+  When using Metric Store manually through endpoints, the user must be aware of changes through
+  Platform upgrades.
