@@ -2,6 +2,14 @@
 title: Metric Store Release Notes
 owner: Log Cache
 ---
+## <a id='v1.5.5'></a> v1.5.5
+
+**Release Date:** August 16, 2022
+
+* Updated Golang version to 1.17.8
+* Updated routing-release to 0.232.0
+* Fixed bug where Metric Store unable to remove shard when the shard is marked as pending to remove, but meantime try to write new points in this shard.
+
 ## <a id='v1.5.4'></a> v1.5.4
 
 **Release Date:** November 19, 2021
