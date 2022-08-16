@@ -2,113 +2,126 @@
 title: Metric Store Release Notes
 owner: Log Cache
 ---
+
 ## <a id='v1.5.5'></a> v1.5.5
 
 **Release Date:** August 16, 2022
 
-* Updated Golang version to 1.17.8
-* Updated routing-release to 0.232.0
-* Fixed bug where Metric Store unable to remove shard when the shard is marked as pending to remove, but meantime try to write new points in this shard.
+- Updated golang to v1.17.8
+- Updated routing-release to 0.232.0
+- Fixed issue where Metric Store was unable to remove a shard marked as pending to remove
+  while new points were being written to the shard.
 
 ## <a id='v1.5.4'></a> v1.5.4
 
 **Release Date:** November 19, 2021
 
-* Added support for TAS v2.12.
-
+Added support for TAS v2.12.
 
 ## <a id='v1.5.3'></a> v1.5.3
 
 **Release Date:** September 15, 2021
 
-* Fixed bug where the charts were not loading when the "doppler.firehose" was not included in the scope.
-* Updated InfluxDb to v1.8.5
-
+- Fixed issue where the charts were not loading when the `doppler.firehose` was not in scope.
+- Updated InfluxDb to v1.8.5
 
 ## <a id='v1.5.2'></a> v1.5.2
 
 **Release Date:** February 10, 2021
 
-* Use Ops Manager as the CA for all certificates to facilitate easier certificate rotation on Metric Store nodes.
+Use Ops Manager as the CA for all certificates to facilitate easier certificate rotation on
+Metric Store nodes.
 
 ## <a id='v1.5.1'></a> v1.5.1
 
 **Release Date:** November 18, 2020
 
-* Replication factor defaulted to 2.
-  * This will double previous storage requirements, as metrics going forward will be replicated across nodes.
-  * Metrics stored prior to this upgrade will continue to exist, but only on a single node. This will result in inconsistent query results for non-replicated metrics, depending on which node gets queried.
-* Include and use route registration health check.
-* The `replication factor` is configurable from OpsManager
-* The `max concurrent queries` is configurable from OpsManager
-* Updated tile internal certs to include missing SANs. *These certs are regenerated automatically*
+- Replication factor defaulted to 2.
+  - This doubles previous storage requirements because metrics going forward are replicated across
+    nodes.
+  - Metrics stored before this upgrade continue to exist, but only on a single node.
+    This causes inconsistent query results for non-replicated metrics, depending on which node
+    is queried.
+- Include and use route registration health check.
+- The `replication factor` is configurable from Ops Manager
+- The `max concurrent queries` is configurable from Ops Manager
+- Updated tile internal certificates to include missing SANs. These certificates are regenerated
+  automatically.
 
 ## <a id='v1.4.5'></a> v1.4.5
 
 **Release Date:** February 10, 2020
 
-* Use Ops Manager as the CA for all certificates to facilitate easier certificate rotation on Metric Store nodes.
+Use Ops Manager as the CA for all certificates to facilitate easier certificate rotation on
+Metric Store nodes.
 
 ## <a id='v1.4.4'></a> v1.4.4
 
 **Release Date:** September 29, 2020
 
-* Fixed bug where Metric Store was intermittently dropping points between nodes
-* Added instance_id label to http_* metrics
-* Removed empty errand `metric-store-smoke-tests`
+- Fixed issue where Metric Store was intermittently dropping points between nodes
+- Added instance_id label to http_* metrics
+- Removed empty errand `metric-store-smoke-tests`
 
 ## <a id='v1.4.3'></a> v1.4.3
 
 **Release Date:** August 17, 2020
 
-* This release fixes a memory leak that would cause the Metric Store to slowly run out of memory due to not cleaning up closed network connection go routines.
-* Updated debug and metrics endpoints to be on different ports.
-* Updated Golang to 1.13.12 and Prometheus to 2.19.1.
+- This release fixes a memory leak that caused Metric Store to slowly run out of memory because of
+  not cleaning up closed network connection go routines.
+- Updated debug and metrics endpoints to be on different ports.
+- Updated golang to v1.13.12 and Prometheus to v2.19.1.
 
 ### <a id='known-issues'></a> Known Issues
-* Found in 1.4.2, some customers are experience points being dropped when metrics are transferred between nodes.
+
+* Some users have seen points dropped when metrics are transferred between nodes.
 
 ## <a id='v1.4.2'></a> v1.4.2
 
 **Release Date:** April 28, 2020
 
-* Resolves issue with `http_total` metric to include correct `node_index` label value.
+Resolves issue with `http_total` metric to include correct `node_index` label value.
 
 ### <a id='known-issues'></a> Known Issues
-* Found in 1.4.2, some customers are experience points being dropped when metrics are transferred between nodes.
+
+Some users have seen points dropped when metrics are transferred between nodes.
 
 ## <a id='v1.4.1'></a> v1.4.1
 
 **Release Date:** April 27, 2020
 
-* Updated the `opsmanager_syslog` property to true to allow operators to egress logs to a syslog destination.
+- Updated the `opsmanager_syslog` property to true to allow operators to egress logs to a syslog destination.
 
 ### <a id='known-issues'></a> Known Issues
 
-This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` value as 0 as opposed to the true node index. Resolved release 1.4.2.
-
+This release has an issue in the `http_total` metric when the Metric Store is running on multiple nodes.
+Metric Store incorrectly tracks a label `node_index` value as 0 as opposed to the true node index.
+Resolved release v1.4.2.
 
 ## <a id='v1.4.0'></a> v1.4.0
 
 **Release Date:** March 31, 2020
 
-* Replication is now Availability Zone aware. **Note** for those upgrading from Beta versions this will cause a loss in metrics.
-* Updated our CA properties to help customers rotate both their Ops Manager and CredHub stored certificates.
-* Updated read sample limit to 20,000,000, previously set to 1,000,000.
-* Removed PromScraper to inject Metric Store metrics into Firehose.
-  * Scraping Metric Store Prometheus endpoint via mTLS.
+- Replication now detects availability zones (AZ). For those upgrading from beta versions, this causes
+  a loss in metrics.
+- Updated our CA properties to help users rotate both their Ops Manager and CredHub stored certificates.
+- Updated read sample limit to 20,000,000. This was previously set to 1,000,000.
+- Removed PromScraper to inject Metric Store metrics into Firehose.
+  - Scraping Metric Store Prometheus endpoint by means of mTLS.
 
 ### <a id='known-issues'></a> Known Issues
 
-This release has a bug in the `http_total` metric when the Metric Store is running on multiple nodes. Metric Store incorrectly tracks a label `node_index` value as 0 as opposed to the true node index.  Resolved release 1.4.2.
+This release has an issue in the `http_total` metric when the Metric Store is running on multiple nodes.
+Metric Store incorrectly tracks a label `node_index` value as `0` as opposed to the true node index.
+Resolved in v1.4.2.
 
 ## <a id='v0.3.0'></a> v0.3.0 (Beta)
 
 **Release Date:** November 19, 2019
 
-* Introduced `http_total` metrics and `http_duration_seconds_*` histogram for request latency.
-* Fixed `metric_storage_duration_days` to report 0 when there is no data.
-* Fixed degraded query performance on large points (>500,000).
+- Introduced `http_total` metrics and `http_duration_seconds_*` histogram for request latency.
+- Fixed `metric_storage_duration_days` to report 0 when there is no data.
+- Fixed degraded query performance when there are more than 500,000 points.
 
 ## <a id='v0.2.0'></a> v0.2.0 (Beta)
 
