@@ -3,20 +3,25 @@ title: Monitoring Metric Store
 owner: Log Cache
 ---
 
-This topic describes how to monitor Metric Store. It includes key scaling indicators (KSIs) to guide Metric Store scaling decisions.
+This topic describes how to monitor Metric Store.
+It includes key scaling indicators (KSIs) to guide Metric Store scaling decisions.
 
 ## <a id='overview'></a> Overview
 
-Metric Store can be scaled vertically at this time. When disk resources are reaching complete consumption, Metric Store will start dropping the oldest data first. When memory and/or CPU resources are reaching complete consumption, Metric Store should be vertically scaled.
+You can scale Metric Store can scaled vertically.
+When disk resources are reaching complete consumption, Metric Store starts dropping the oldest data
+first.
+When memory or CPU resources are reaching complete consumption, scale Metric Store vertically.
 
 ## <a id='ksi'></a> Key Scaling Indicators
 
-- [nozzle_dropped](monitoring.html#nozzle_dropped)
+- [nozzle_dropped](#nozzle_dropped)
 
 ## <a id='metrics'></a> Metric Emitted by Metric Store
 
 Metric Store publishes metrics for monitoring the Metric Store itself.
-You can use these metrics to observe the health of the Metric Store and determine if the VMs and disks are appropriately scaled.
+You can use these metrics to observe the health of the Metric Store and verify that the VMs and disks
+are appropriately scaled.
 
 ### <a id='nozzle-metrics'></a> Nozzle Job Metrics
 
@@ -31,7 +36,7 @@ Log Proxy (RLP).
   <th>Notes</th>
 </tr>
 <tr>
-  <td>Number of envelopes sent to collocated Metric Store</td>
+  <td>Number of envelopes sent to co-located Metric Store</td>
   <td><code>metric_store_nozzle_ingress_envelopes_total</code></td>
   <td>counter</td>
   <td>When increasing, nozzle is correctly consuming from the RLP</td>
@@ -40,17 +45,17 @@ Log Proxy (RLP).
   <td>Number of envelopes dropped when reading from RLP</td>
   <td><a id='nozzle_dropped'></a><code>metric_store_nozzle_dropped_envelopes_total</code></td>
   <td>counter</td>
-  <td>If this number is increasing at a steady rate, it may indicate that you
-  need scale up the size of your VMs</td>
+  <td>If this number is increasing at a steady rate, it might indicate that you
+  need to scale up the size of your VMs</td>
 </tr>
 <tr>
   <td>Number of points dropped in outbound channel</td>
   <td><code>metric_store_nozzle_dropped_points_total</code></td>
   <td>counter</td>
-  <td>Should always be zero. If not, it may be useful in debugging.</td>
+  <td>Should always be zero. If not, it might be useful in debugging.</td>
 </tr>
 <tr>
-  <td>Number of points written to its collocated Metric Store</td>
+  <td>Number of points written to its co-located Metric Store</td>
   <td><code>metric_store_nozzle_egress_points_total</code></td>
   <td>counter</td>
   <td></td>
@@ -59,7 +64,7 @@ Log Proxy (RLP).
   <td>Number of errors writing to a remote node</td>
   <td><code>metric_store_nozzle_egress_errors_total</code></td>
   <td>counter</td>
-  <td>If this number consistently increasing, it may indicate network issues or an
+  <td>If this number consistently increasing, it might indicate network issues or an
   overloaded Metric Store node</td>
 </tr>
 <tr>
@@ -67,6 +72,13 @@ Log Proxy (RLP).
   <td><code>metric_store_nozzle_egres_duration_seconds</code></td>
   <td>gauge</td>
   <td></td>
+</tr>
+<tr>
+  <td>Total number of envelopes skipped by tag within the nozzle</td>
+  <td><code>metric_store_nozzle_skipped_envelopes_by_tag_total</code></td>
+  <td>counter</td>
+  <td>Total number of envelopes skipped by tag within the nozzle</td>
+  <td>When Enable Envelope Selector is disabled(by default) the value is 0</td>
 </tr>
 </table>
 
@@ -103,13 +115,13 @@ Log Proxy (RLP).
   <th>Notes</th>
 </tr>
 <tr>
-  <td>Number of points ingressed to colocated Metric Store</td>
+  <td>Number of points ingressed to co-located Metric Store</td>
   <td><code>metric_store_ingress_points_total</code></td>
   <td>counter</td>
   <td>This should be steadily increasing at a relatively consistent rate</td>
 </tr>
 <tr>
-  <td>Number of points succesfully written to storage engine</td>
+  <td>Number of points successfully written to storage engine</td>
   <td><code>metric_store_written_points_total</code></td>
   <td>counter</td>
   <td>This should be steadily increasing at a relatively consistent rate</td>
@@ -127,14 +139,20 @@ Log Proxy (RLP).
   <td></td>
 </tr>
 <tr>
-  <td>Number of shards removed due to time-based expiration</td>
+  <td>Number of shards removed because of time-based expiration</td>
   <td><code>metric_store_expired_shards_total</code></td>
   <td>counter</td>
   <td></td>
 </tr>
 <tr>
-  <td>Number of shards removed due to disk space threshold</td>
+  <td>Number of shards removed because of the disk space threshold</td>
   <td><code>metric_store_pruned_shards_total</code></td>
+  <td>counter</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Number of points dropped because of deleting the shard that is in the pending state</td>
+  <td><code>metric_store_pending_deletion_dropped_points_total</code></td>
   <td>counter</td>
   <td></td>
 </tr>

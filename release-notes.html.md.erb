@@ -3,6 +3,22 @@ title: Metric Store Release Notes
 owner: Log Cache
 ---
 
-## <a id='1-6-0'></a> v1.6.0
+This topic contains release notes for Metric Store.
 
-**Release Date:** MONTH DAY, YEAR
+## <a id='v1.6.0'></a> v1.6.0
+
+**Release Date:** May 18, 2023
+- Updated Golang version to 1.20.4
+- Updated routing-release to 0.262.0
+- Updated bpm-release to 1.1.23
+- Updated Prometheus Version to 0.2.42
+- Changed Stemcell from Ubuntu Xenial to Ubuntu Jammy.
+- Added optional functionality `Enable Envelope Selector`
+  - If enabled, only envelopes with application metric tags(app_id, applicationGuid) will be kept.
+  - Added corresponding [metric_store_nozzle_skipped_envelopes_by_tag_total](monitoring.html) metric.
+- The `Enable Envelope Selector` is configurable from Ops Manager
+
+## <a id="view"></a> View Release Notes for Another Version
+
+To view the release notes for another product version, select the version from dropdown at the top of
+this page.
