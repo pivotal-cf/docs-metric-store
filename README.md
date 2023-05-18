@@ -4,9 +4,7 @@ These are the docs for the Metric Store tile. We maintain documentation for each
 
 Got a question or want to make a correction, feel free to submit an issue or a pull request!
 
-# docs-metric-store
-
-In this README: 
+In this README:
 
 - [Branches in this Content Repo](#branches-in-this-content-repo)
 - [Releasing a New Minor Version](#releasing-a-new-minor-version)
