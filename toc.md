@@ -1,4 +1,4 @@
-- [Metric Store v1.5 Release Notes](release-notes.html)
+- [Metric Store v1.6 Release Notes](release-notes.html)
 - [Metric Store](index.html)
 - [Installing Metric Store](installing.html)
 - [Using Metric Store](using.html)

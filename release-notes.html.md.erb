@@ -3,6 +3,19 @@ title: Metric Store Release Notes
 owner: Log Cache
 ---
 
+## <a id='v1.6.0'></a> v1.6.0
+
+**Release Date:** May 18, 2023
+- Updated Golang version to 1.20.4
+- Updated routing-release to 0.262.0
+- Updated bpm-release to 1.1.23
+- Bump Prometheus Version to 0.2.42
+- Change Stemcell from Ubuntu Xenial to Ubuntu Jammy.
+- Add functionality `Enable Envelope Selector`
+  - If enabled, only envelopes with specific tags will be kept
+  - By default, envelopes with `app_id` and `applicationGuid` tags are enabled. That means if enabled by default Metric Store will store only application metrics(platform and system metrics will be skipped)
+- The `Enable Envelope Selector` is configurable from Ops Manager
+
 ## <a id='v1.5.5'></a> v1.5.5
 
 **Release Date:** August 16, 2022
