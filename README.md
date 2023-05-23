@@ -1,66 +1,59 @@
 # Metric Store Docs
 
-These are the docs for the Metric Store tile. We maintain documentation for each minor version of the Metric Store via branches.
+These are the docs for the Metric Store tile. We maintain documentation for each minor version of
+the Metric Store via branches.
 
 Got a question or want to make a correction, feel free to submit an issue or a pull request!
-
-In this README:
-
-- [Branches in this Content Repo](#branches-in-this-content-repo)
-- [Releasing a New Minor Version](#releasing-a-new-minor-version)
-- [Partials](#partials)
-- [Contributing to Documentation](#contributing-to-documentation)
-- [Publishing Docs](#publishing-docs)
-- [Troubleshooting Markdown](#troubleshooting-markdown)
 
 ## Branches in this Content Repo
 
 | Branch Name| Use for… |
 |------------| ---------|
-| master     | staged here: https://docs-staging.vmware.com/en/draft/Metric-Store/1.6/metric-store/GUID-index.html |
+| main       | staged here: https://docs-staging.vmware.com/en/draft/Metric-Store/1.7/metric-store/GUID-index.html |
+| 1.6        | v1.6 (https://docs.vmware.com/en/Metric-Store/1.6/metric-store/GUID-index.html) |
 | 1.5        | v1.5 (https://docs.vmware.com/en/Metric-Store/1.5/metric-store/GUID-index.html) |
 | 1.4        | v1.4 (https://docs.vmware.com/en/Metric-Store/1.4/metric-store/GUID-index.html) |
 | 1.3        | v1.3 (https://docs.vmware.com/en/Metric-Store/1.3/metric-store/GUID-index.html) |
 
 ## Releasing a New Minor Version
 
-Because **master** is the latest and greatest documentation, the process would be to cut a **x.x** branch
-for the version that **master** was targeting during that time.
+Because **main** is the latest and greatest documentation, the process would be to cut a **x.x**
+branch for the version that **main** was targeting during that time.
 
-After this point, **master** will then be the target for the next version of this product.
-
+After this point, **main** will then be the target for the next version of this product.
 
 ## Partials
 
-Cross-product partials (if any) for these docs are single sourced from the [Docs Partials](https://github.com/pivotal-cf/docs-partials) repository.
-
+Cross-product partials (if any) for these docs are single sourced from the
+[Docs Partials](https://github.com/pivotal-cf/docs-partials) repository.
 
 ## Contributing to Documentation
 
-If there is some documentation to add for an unreleased patch version, then create a branch off of the **live** branch
-you intend to modify and create a pull request against that branch.
-After the version that change is targeting is released, the pull request can be merged and will be live
-the next time a documentation deployment occurs.
+If there is some documentation to add for an unreleased patch version, then create a branch off of
+the **live** branch you intend to modify and create a pull request against that branch. After the
+version that change is targeting is released, the pull request can be merged and will be live the
+next time a documentation deployment occurs.
 
 If the documentation is meant to be target several released versions,
 then you will need to:
-+ create a pull request for each individual minor version
-+ or ask the technical writer to cherry-pick to particular branches/versions.
+
+- create a pull request for each individual minor version
+- or ask the technical writer to cherry-pick to particular branches/versions.
 
 For instructions on how to create a pull request on a branch and instructions on how to create a
 pull request using a fork, see
 [Creating a PR](https://docs-wiki.sc2-04-pcf1-apps.oc.vmware.com/wiki/external/create-pr.html)
 in the documentation team wiki.
 
-
 ## Publishing Docs
 
 - [docworks](https://docworks.vmware.com/) is the main tool for managing docs used by writers.
 - [docsdash](https://docsdash.vmware.com/) is a deployment UI which manages the promotion from
-staging to pre-prod to production. The process below describes how to upload our docs to staging,
-replacing the publication with the same version.
+  staging to pre-prod to production. The process below describes how to upload our docs to staging,
+  replacing the publication with the same version.
 
 ### Prepare Markdown Files
+
 - Markdown files live in this repo.
 - Images should live in an `images` directory at the same level and linked with a relative link.
 - Each page requires an entry in [config/toc.md](config/toc.md) for the table of contents.
@@ -75,17 +68,18 @@ replacing the publication with the same version.
 
 ### Promoting to Pre-Prod and Prod
 
-**Prerequisite** Needs additional privileges - reach out to a manager on the docs team [#tanzu-docs](https://vmware.slack.com/archives/C055V2M0H) or ask a writer to do this step for you.
+**Prerequisite** Needs additional privileges - reach out to a manager on the docs team
+[#tanzu-docs](https://vmware.slack.com/archives/C055V2M0H) or ask a writer to do this step for you.
 
-1. Go to Staging publications in docsdash  
-  https://docsdash.vmware.com/deployment-stage
+1. Go to Staging publications in docsdash
+   https://docsdash.vmware.com/deployment-stage
 
 2. Select a publication (make sure it's the latest version)
 
 3. Click "Deploy selected to Pre-Prod" and wait for the pop to turn green (refresh if necessary after about 10s)
 
-4. Go to Pre-Prod list  
-  https://docsdash.vmware.com/deployment-pre-prod
+4. Go to Pre-Prod list
+   https://docsdash.vmware.com/deployment-pre-prod
 
 5. Select a publication
 
