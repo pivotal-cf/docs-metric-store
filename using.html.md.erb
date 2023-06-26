@@ -36,9 +36,9 @@ curl -vvv -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-D
 
 The status code will be 200 is everything is working properly.
 
-#### For PAS developers
+#### For Tanzu Application Service developers
 
-As a PAS developer, you can query metrics for applications you have access to.
+As a Tanzu Application Service developer, you can query metrics for applications you have access to.
 When querying with PromQL, you must specify the `source_id` label with the application `guid` as the label value.
 
 For example:
@@ -48,7 +48,7 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
   --data-urlencode "query=cpu{source_id=\"$(cf app --guid your-app-name)\"}"
 ```
 
-##### Standard PAS application metrics
+##### Standard Tanzu Application Service application metrics
 
 <table border="1" class="nice">
   <thead>
