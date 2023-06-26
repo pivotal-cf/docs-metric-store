@@ -24,7 +24,7 @@ header set with a UAA provided token.
 
 #### For Metric Store admins
 
-As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries. 
+As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries.
 You will need to add either `doppler.firehose` or `logs.admin` scope to your admin account.
 
 You then should be able to run the following query:
@@ -36,9 +36,9 @@ curl -vvv -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-D
 
 The status code will be 200 is everything is working properly.
 
-#### For PAS developers
+#### For Tanzu Application Service developers
 
-As a PAS developer, you can query metrics for applications you have access to.
+As a Tanzu Application Service developer, you can query metrics for applications you have access to.
 When querying with PromQL, you must specify the `source_id` label with the application `guid` as the label value.
 
 For example:
@@ -47,7 +47,8 @@ For example:
 curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" \
   --data-urlencode "query=cpu{source_id=\"$(cf app --guid your-app-name)\"}"
 ```
-##### List of out-of-the-box application metrics
+
+##### Standard Tanzu Application Service application metrics
 
 <table border="1" class="nice">
   <thead>
@@ -68,25 +69,25 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
     <td>Memory usage in bytes</td>
     <td>`avg(memory{source_id="$app_guid"})`</td>
   </tr>
-    
+
   <tr>
     <td>`memory_quota`</td>
     <td>Memory Quota allocated in bytes</td>
     <td>`memory{source_id="$app_guid"} / memory_quota{source_id="$app_guid"}`</td>
   </tr>
-    
+
   <tr>
     <td>`disk`</td>
     <td>Disk usage in bytes</td>
     <td>`avg(disk{source_id="$app_guid"}) / 1024 / 1024 / 1024 # in gigabytes`</td>
   </tr>
-    
+
   <tr>
     <td>`disk_quota`</td>
     <td>Disk quota allocated in bytes</td>
     <td>`disk{source_id="$app_guid"} / disk_quota{source_id="$app_guid"}`</td>
   </tr>
-    
+
   <tr>
     <td>`http_total`</td>
     <td>HTTP request counts includes status</td>
@@ -137,9 +138,9 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
   "data": {
     "resultType": "vector",
     "result": [
-      { 
-        "metric": {"__name__": "metric_name"}, 
-        "value": [ "<timestamp>", "<value>" ] 
+      {
+        "metric": {"__name__": "metric_name"},
+        "value": [ "<timestamp>", "<value>" ]
       },
       "..."
     ]
