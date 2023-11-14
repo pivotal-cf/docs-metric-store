@@ -3,18 +3,18 @@ title: Monitoring Metric Store
 owner: Log Cache
 ---
 
-This topic tells you how to monitor Metric Store.
+Learn how to monitor Metric Store.
 It includes key scaling indicators (KSIs) to guide Metric Store scaling decisions.
 
-## <a id='overview'></a> Overview
+You can scale Metric Store vertically.
+When disk resources are reaching complete consumption, Metric Store starts dropping the oldest data
+first. When memory or CPU resources are reaching complete consumption, then scale Metric Store vertically.
 
-Metric Store can be scaled vertically at this time. When disk resources are reaching complete consumption, Metric Store will start dropping the oldest data first. When memory and/or CPU resources are reaching complete consumption, Metric Store should be vertically scaled.
-
-## <a id='ksi'></a> Key Scaling Indicators
+## <a id='ksi'></a> Key Scaling indicators
 
 - [nozzle_dropped](monitoring.html#nozzle_dropped)
 
-## <a id='metrics'></a> Metric Emitted by Metric Store
+## <a id='metrics'></a> Metric emitted by Metric Store
 
 Metric Store publishes metrics for monitoring the Metric Store itself.
 You can use these metrics to observe the health of the Metric Store and determine if the VMs and disks are appropriately scaled.
@@ -24,13 +24,15 @@ You can use these metrics to observe the health of the Metric Store and determin
 The nozzle is the process that ingresses envelopes from Loggregator's Reverse
 Log Proxy (RLP).
 
-<table class="nice">
+<table class=“table”>
+<thead>
 <tr>
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
   <th>Notes</th>
 </tr>
+</thead>
 <tr>
   <td>Number of envelopes sent to collocated Metric Store</td>
   <td><code>metric_store_nozzle_ingress_envelopes_total</code></td>
@@ -73,13 +75,15 @@ Log Proxy (RLP).
 
 ### <a id='metric-store-job-metrics'></a> CF Auth Proxy Job Metrics
 
-<table>
+<table class=“table”>
+<thead>
 <tr>
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
   <th>Notes</th>
 </tr>
+</thead>
 <tr>
   <td>Duration in seconds of requests made to the auth proxy </td>
   <td><code>metric_store_auth_proxy_request_duration_seconds</code></td>
@@ -96,13 +100,15 @@ Log Proxy (RLP).
 
 ### <a id='metric-store-job-metrics'></a> Metric Store Job Metrics
 
-<table>
+<table class=“table”>
+<thead>
 <tr>
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
   <th>Notes</th>
 </tr>
+</thead>
 <tr>
   <td>Number of points ingressed to colocated Metric Store</td>
   <td><code>metric_store_ingress_points_total</code></td>
@@ -185,13 +191,15 @@ Log Proxy (RLP).
 
 ### <a id='metric-store-remote-metrics'></a> Metric Store Remote Metrics
 
-<table class="nice">
+<table class=“table”>
+<thead>
 <tr>
   <th>Reports</th>
   <th>Metric</th>
   <th>Type</th>
   <th>Notes</th>
 </tr>
+</thead>
 <tr>
   <td>Size of a replayer queue</td>
   <td><code>metric_store_replayer_disk_usage_bytes</code></td>

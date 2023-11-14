@@ -3,9 +3,7 @@ title: Querying the Metric Store
 owner: Log Cache
 ---
 
-This topic tells you how to configure and use Metric Store.
-
-## <a id='overview'></a> Overview
+Learn how to configure and use Metric Store.
 
 Metric Store implements the Prometheus Query Language for querying metrics for which you have access.
 
@@ -19,26 +17,27 @@ Metric Store implements the Prometheus Query Language for querying metrics for w
 
 ### <a id='authorization-authentication'></a> Authorization & Authentication
 
-When querying the API via HTTPS, each request must have the `Authorization`
+When querying the API through HTTPS, each request must have the `Authorization`
 header set with a UAA provided token.
 
 #### For Metric Store admins
 
-As a Metric Store admin, you will have access to all recorded metrics (platform and application) and can execute Label and Series queries.
-You will need to add either `doppler.firehose` or `logs.admin` scope to your admin account.
+As a Metric Store admin, you have access to all recorded metrics (platform and application) and can
+run Label and Series queries.
+You need to add either `doppler.firehose` or `logs.admin` scope to your admin account.
 
-You then should be able to run the following query:
+You then can run the following query:
 
 ```shell
 cf login
 curl -vvv -H "Authorization: $(cf oauth-token)" -G https://metric-store.SYSTEM-DOMAIN/api/v1/label/source_id/values
 ```
 
-The status code will be 200 is everything is working properly.
+The status code is 200 if everything is working properly.
 
 #### For Tanzu Application Service developers
 
-As a Tanzu Application Service developer, you can query metrics for applications you have access to.
+As a Tanzu Application Service developer, you can query metrics for applications that you have access.
 When querying with PromQL, you must specify the `source_id` label with the application `guid` as the label value.
 
 For example:
@@ -50,8 +49,8 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
 
 ##### Standard Tanzu Application Service application metrics
 
-<table border="1" class="nice">
-  <thead>
+<table class=“table”>
+<thead>
   <tr>
     <th>Metric Name</th>
     <th>Description</th>
@@ -101,15 +100,15 @@ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAI
   </tbody>
 </table>
 
-## <a id='querying'></a> Querying via Prometheus-Compatible HTTP Endpoints
+## <a id='querying'></a> Querying through Prometheus-Compatible HTTP Endpoints
 
 ### Notes on PromQL
 The ultimate goal of these endpoints is to create a fully-compliant,
-Prometheus-compatible interface. This should allow tools such as Grafana to
+Prometheus-compatible interface. This allows tools such as Grafana to
 work directly with Metric Store without any additional translation.
 
 A valid PromQL metric name consists of the character [a-Z][0-9] and underscore. Names can begin with [a-Z] or underscore. Names cannot begin with [0-9].
-As a measure to work with existing metrics that do not comply with the above format a conversion process takes place when matching on metric names.
+As a measure to work with existing metrics that do not comply with the previous mentioned format a conversion process takes place when matching on metric names.
 Any character that is not in the set of valid characters is converted to an underscore.
 The metric is not changed in the store.
 
@@ -125,7 +124,7 @@ Query Parameters:
 - **query** is a [Prometheus expression query string](https://prometheus.io/docs/prometheus/latest/querying/basics/#querying-prometheus).
 - **time** is an optional UNIX timestamp in seconds or RFC3339. (e.g. `date -d '24 hours ago' +%s`).
 
-<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
+Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.
 
 ```shell
 $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query" --data-urlencode 'query=metric_name_0{source_id="source_id_0"}'
@@ -160,7 +159,7 @@ Query Parameters:
 - **end** is a UNIX timestamp in seconds or RFC3339. (e.g. `date +%s`). End time is exclusive. `[start..end)`
 - **step** is a query resolution step width in `duration` format or float number of seconds.
 
-<p class="note"><strong>Note</strong>: Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
+<p> Admins (`doppler.firehose` or `logs.admin`) are permitted to use this query without specifying a source_id in the query parameter. Non-admins cannot use regex matchers on source_id.</p>
 
 ```shell
 $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOMAIN/api/v1/query_range" \
@@ -195,7 +194,7 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
 Issues a PromQL series query against Metric Store data. You can read more detail
 in the Prometheus documentation [here](https://prometheus.io/docs/prometheus/latest/querying/api/#finding-series-by-label-matchers).
 
-<p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
+<p> Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
 
 Query Parameters:
 
@@ -230,7 +229,7 @@ $ curl -H "Authorization: $(cf oauth-token)" -G "https://metric-store.SYSTEM-DOM
 
 Retrieve all label names for authorized source ids from the store.
 
-<p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
+<p> Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
 
 ##### Request
 
@@ -261,7 +260,7 @@ $ curl -H "Authorization: $(cf oauth-token)" "https://metric-store.SYSTEM-DOMAIN
 
 Retrieve label values by `label_name` for all authorized source ids. The special label `__name__` can be used to retrieve metric names from the store.
 
-<p class="note"><strong>Note</strong>: Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
+<p> Non-admins (`doppler.firehose` or `logs.admin`) are not permitted to use this query.</p>
 
 ##### Request
 
