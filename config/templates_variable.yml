@@ -27,7 +27,7 @@ template_variables:
 
   segment_runtime_full: Isolation Segment
 
-  ops_manager: Ops Manager
+  ops_manager: Tanzu Operations Manager
 
   product_url: https://network.tanzu.vmware.com/products/
   product_link: <div class="header-item"><a href="https://network.tanzu.vmware.com/products/pivotal-cf">Back to Product Page</a></div>

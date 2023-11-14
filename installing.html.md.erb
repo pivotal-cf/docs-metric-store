@@ -3,26 +3,28 @@ title: Installing Metric Store
 owner: Log Cache
 ---
 
-This topic tells you how to install Metric Store.
+Learn how to install Metric Store.
 
 ## <a id='prerequisites'></a> Prerequisites
 
-For a list of compatible Ops Manager and VMware Tanzu Application Service versions, see [Product Snapshot](index.html#snapshot).
+For a list of compatible Tanzu Operations Manager and VMware Tanzu Application Service versions, see [Product Snapshot](index.html#snapshot).
 
 ## <a id='install'></a> Install Metric Store
 
 1. Download the product file from [VMware Tanzu Network](https://network.tanzu.vmware.com/products/p-metric-store/).
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
-1. Under the **Import a Product** button, click **+** next to the version number of Metric Store. This adds the tile to your staging area.
+1. Go to the Tanzu Operations Manager Installation Dashboard and click **Import a Product** to upload the product file.
+1. Under the **Import a Product** button, click **+** next to the version number of Metric Store.
+This adds the tile to your staging area.
 
 ### <a id='network-configuration'></a> Create a Network
 
-If you do not want to use an existing network for Metric Store, you can create a new network by following these steps:
+If you do not want to use an existing network for Metric Store, you can create a new network by completing these steps:
 
-1. Click the **BOSH Director** tile on the Ops Manager Installation Dashboard.
-   ![The Installation Dashboard in Ops Manager shows tiles of various apps. An arrow points to the tile labeled Bosh Director for GCP.](./images/open-bosh-director.png)
-1. Navigate to **Create Networks** and click **Add Network**.
-   ![The Bosh Director for GCP page in Ops Manager shows Create Networks on the left navigation. An arrow points to the Add Network button.](./images/add-network-bosh-director.png)
+1. Click the **BOSH Director** tile on the Tanzu Operations Manager Installation Dashboard.
+   ![The Installation Dashboard in Tanzu Operations Manager shows tiles of various apps. An arrow points to the tile labeled Bosh Director for GCP.](./images/open-bosh-director.png)
+1. Go to **Create Networks** and click **Add Network**.
+   ![The Bosh Director for GCP page in Tanzu Operations Manager shows Create Networks on the navigation. An arrow points to
+   the **Add Network** button.](./images/add-network-bosh-director.png)
 1. In the **Name** text box, enter a name for the service network.
 1. Enter the network details.
 1. Click **Save**.
@@ -31,12 +33,12 @@ If you do not want to use an existing network for Metric Store, you can create a
 
 To configure the Metric Store tile, perform the following steps:
 
-1. Click the **Metric Store** tile on the Ops Manager Installation Dashboard.
-1. Navigate to **Assign AZs and Networks**.
+1. Click the **Metric Store** tile on the Tanzu Operations Manager Installation Dashboard.
+1. Go to **Assign AZs and Networks**.
 1. Select an Availability Zone (AZ) for placing singleton jobs.
 1. Select one or more AZs for balancing other jobs. To create a highly available environment, VMware recommends selecting multiple AZs.
 1. Select **Network** for installing Metric Store.
-  ![The Settings tab on the Metric Store page in Ops Manager displays options for assigning AZs and Networks. An arrow points to the Save button.](./images/save-metric-store-network.png)
+  ![The Settings tab on the Metric Store page in Tanzu Operations Manager displays options for assigning AZs and Networks. An arrow points to the **Save** button.](./images/save-metric-store-network.png)
 1. Click **Save**.
 
 
@@ -45,8 +47,8 @@ To configure the Metric Store tile, perform the following steps:
 You can configure Metric Store resources in the **Resource Config** section of the Metric Store tile.
 By default, Metric Store configuration is pre-selected for all deployments.
 
-<table border="1" class="nice">
-  <thead>
+<table class=“table”>
+<thead>
   <tr>
     <th>Resource</th>
     <th>Instances</th>

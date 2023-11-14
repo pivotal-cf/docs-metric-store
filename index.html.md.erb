@@ -19,33 +19,35 @@ has built-in compression and a memory-efficient series index.
 Metric Store offers multi-node deployments, data replication, hinted handoff, and load balancing in
 a highly-available configuration.
 
-> **Note:** The only officially supported use case for the Metric Store product is as the backing
-> Time Series Database for [App Metrics v2.0](https://docs.pivotal.io/app-metrics/2-0/)
-> and the [TAS v2.9 and later Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html).
+> The only officially supported use case for the Metric Store product is as the backing
+> Time Series Database for [App Metrics v2.2](https://docs.vmware.com/en/App-Metrics-for-VMware-Tanzu/2.2/app-metrics/GUID-index.html)
+> and the [TAS v2.9 and later Apps Manager](https://docs.vmware.com/en/VMware-Tanzu-Application-Service/5.0/tas-for-vms/console-index.html).
 > Use cases outside of these bounds have no guarantee of continued support or availability.
 
 ### <a id='oss-metric-store'></a> More Information on Open Source Metric Store
 
-- [Open Source Release Blog post](https://content.pivotal.io/blog/metric-store-a-cloud-native-time-series-database-for-cloud-foundry)
+- [Open Source Release Blog post](https://tanzu.vmware.com/content/blog/metric-store-a-cloud-native-time-series-database-for-cloud-foundry)
 - [Open Source README](https://github.com/cloudfoundry/metric-store-release/blob/develop/README.md)
 
 ## <a id='snapshot'></a> Product Snapshot
 
 The following table provides version and version-support information about Metric Store.
 
-<table class="nice">
+<table class=“table”>
+<thead>
     <th>Element</th>
     <th>Details</th>
     <tr>
         <td>Version</td>
         <td>v1.7.0</td>
     </tr>
+    </thead>
     <tr>
         <td>Release date</td>
         <td>DD MMM 2023</td>
     </tr>
     <tr>
-        <td>Compatible Ops Manager versions</td>
+        <td>Compatible Tanzu Operations Manager versions</td>
         <td>v2.6 and later</td>
     </tr>
     <tr>
@@ -65,8 +67,8 @@ Metric Store has the following limitations:
 - Horizontally scaling Metric Store currently results in data loss.
   Vertical scaling is recommended at this time.
 - Platforms are ever changing and we cannot guarantee metric stability.
-  Using Metric Store through products such as [App Metrics](https://docs.pivotal.io/app-metrics/2-0/)
-  or [Apps Manager](https://docs.pivotal.io/platform/application-service/2-9/console/index.html)
-  will be supported use cases.
-  When using Metric Store manually through endpoints, the user must be aware of changes through
+  Using Metric Store through products such as [App Metrics](https://docs.vmware.com/en/App-Metrics-for-VMware-Tanzu/2.2/app-metrics/GUID-index.html)
+  or [Learning about Apps Manager](https://docs.vmware.com/en/VMware-Tanzu-Application-Service/5.0/tas-for-vms/console-index.html)
+  are supported use cases.
+  When using Metric Store manually through endpoints, you must be aware of changes through
   Platform upgrades.
