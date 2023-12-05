@@ -4,25 +4,20 @@ These are the docs for the Metric Store tile. We maintain documentation for each
 
 Got a question or want to make a correction, feel free to submit an issue or a pull request!
 
-In this README:
-
-- [Branches in this Content Repo](#branches-in-this-content-repo)
-- [Releasing a New Minor Version](#releasing-a-new-minor-version)
-- [Partials](#partials)
-- [Contributing to Documentation](#contributing-to-documentation)
-- [Publishing Docs](#publishing-docs)
-- [Troubleshooting Markdown](#troubleshooting-markdown)
-
-## Branches in this Content Repo
+## Branches
 
 | Branch Name| Use for… |
 |------------| ---------|
-| master     | staged here: https://docs-staging.vmware.com/en/draft/Metric-Store/1.6/metric-store/GUID-index.html |
-| 1.5        | v1.5 (https://docs.vmware.com/en/Metric-Store/1.5/metric-store/GUID-index.html) |
-| 1.4        | v1.4 (https://docs.vmware.com/en/Metric-Store/1.4/metric-store/GUID-index.html) |
-| 1.3        | v1.3 (https://docs.vmware.com/en/Metric-Store/1.3/metric-store/GUID-index.html) |
+| main       | staged here: https://docs-staging.vmware.com/en/draft/Metric-Store/1.7/metric-store/GUID-index.html |
+| 1.6        | v1.6 staging here: https://docs-staging.vmware.com/en/Metric-Store/1.6/metric-store/GUID-release-notes.html and prod here: https://docs.vmware.com/en/Metric-Store/1.6/metric-store/GUID-index.html |
+| 1.5        | v1.5 staging here: https://docs-staging.vmware.com/en/Metric-Store/1.5/metric-store/GUID-release-notes.html and prod here: https://docs.vmware.com/en/Metric-Store/1.5/metric-store/GUID-index.html |
+| 1.4        | DO NOT USE. Archived here: https://docs.vmware.com/en/Metric-Store/1.4/metric-store-1-4.pdf |
+| 1.3        | DO NOT USE. Archived here: https://docs.vmware.com/en/Metric-Store/1.3/metric-store-1-3.pdf |
+| 0.3        | DO NOT USE. Archived here: https://docs.vmware.com/en/Metric-Store/0.3/metric-store-0-3.pdf |
+| 0.2        | DO NOT USE. Archived here: https://docs.vmware.com/en/Metric-Store/0.2/metric-store-0-2.pdf |
 
-## Releasing a New Minor Version
+
+## Releasing a new minor version
 
 Because **master** is the latest and greatest documentation, the process would be to cut a **x.x** branch
 for the version that **master** was targeting during that time.
@@ -35,7 +30,7 @@ After this point, **master** will then be the target for the next version of thi
 Cross-product partials (if any) for these docs are single sourced from the [Docs Partials](https://github.com/pivotal-cf/docs-partials) repository.
 
 
-## Contributing to Documentation
+## Contributing to documentation
 
 If there is some documentation to add for an unreleased patch version, then create a branch off of the **live** branch
 you intend to modify and create a pull request against that branch.
@@ -73,7 +68,7 @@ replacing the publication with the same version.
 
    There should be an entry with a blue link which says `Documentation` and points to staging.
 
-### Promoting to Pre-Prod and Prod
+### Promoting to pre-prod and prod
 
 **Prerequisite** Needs additional privileges - reach out to a manager on the docs team [#tanzu-docs](https://vmware.slack.com/archives/C055V2M0H) or ask a writer to do this step for you.
 
